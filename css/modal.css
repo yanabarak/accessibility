@@ -1,0 +1,202 @@
+:root {
+  --main-brand-color: #add129;
+  --second-brand-color: #7dc617;
+}
+
+.modal {
+  height: 100vh;
+  display: grid;
+  place-items: center;
+}
+
+.modal__container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  background-color: #eff1f5;
+  width: 520px;
+  height: 100%;
+  display: grid;
+  align-items: flex-end;
+  overflow: hidden;
+  transition: all 0.3s;
+  z-index: 100000;
+  visibility: hidden;
+  opacity: 0;
+  box-shadow: 0px 4px 4px #e6f2f2;
+}
+
+.modal__content {
+  position: relative;
+  text-align: center;
+  padding: 1.25rem;
+  border-radius: 1rem 1rem 0 0;
+  /* transition: all 0.3s;
+  transform: translateY(10%); */
+  display: flex;
+  flex-flow: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  gap: 20px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 15px;
+  padding-bottom: 15px;
+  box-sizing: border-box;
+}
+
+.modal__img {
+  width: 150px;
+  margin-bottom: 0.75rem;
+}
+
+.modal__description {
+  margin-bottom: 1.5rem;
+}
+
+.modal__button-width {
+  width: 90%;
+}
+
+.modal__button-link {
+  display: block;
+  margin: 1rem auto 0;
+  background-color: transparent;
+  color: var(--first-color);
+  font-weight: 500;
+}
+
+/* ------------- SHOW MODAL ------------- */
+
+.show-accessibility {
+  visibility: visible;
+  opacity: 1;
+}
+
+.show-accessibility .modal__content {
+  transform: translateY(0);
+}
+
+.modal__button.showButton {
+  display: block;
+}
+
+/* ------------- BREAKPOINTS ------------- */
+
+/* For small devices */
+
+@media screen and (min-width: 576px) {
+  .modal__content {
+    margin: auto;
+    margin-top: 50px;
+    width: 100%;
+    border-radius: 1.25rem;
+  }
+  .modal__img {
+    width: 170px;
+  }
+}
+/* button */
+
+#open-accessibility {
+  background-color: var(--main-brand-color);
+  padding: 0px;
+  width: 50px;
+  height: 50px;
+  min-height: unset;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  transition: transform 0.3s linear;
+}
+#open-accessibility:hover {
+  background-color: var(--second-brand-color);
+  transform: scale(1.1);
+}
+
+#close-accessibility,
+#close-accessibility:hover {
+  background-color: transparent !important;
+  background-image: none;
+  padding: 0px !important;
+  min-height: unset;
+  height: unset !important;
+  opacity: 0.5;
+  position: absolute;
+  top: 0px;
+  right: 10px;
+  transition: opacity 0.3s linear;
+}
+#close-accessibility:hover {
+  opacity: 1;
+}
+.title {
+  margin: 0px;
+  font-size: 20px;
+  color: #fff;
+  text-align: center;
+}
+.modal__header {
+  background-color: var(--main-brand-color);
+  padding: 10px;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  left: 0px;
+  overflow: visible;
+}
+.modal__header::before,
+.modal__header::after {
+  content: '';
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0);
+  bottom: -40px;
+  left: 0px;
+  height: 40px;
+  width: 30px;
+  border-top-left-radius: 20px;
+  box-shadow: 0 -20px 0 0 var(--main-brand-color);
+  z-index: 10000000;
+}
+
+.modal__header::after {
+  box-shadow: 0 -20px 0 0 var(--main-brand-color);
+  right: 0px;
+  left: auto;
+  transform: rotateY(180deg);
+}
+
+.feature__block {
+  position: relative;
+  width: 100%;
+  height: 114px;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+  -webkit-appearance: none;
+  cursor: pointer;
+  background: #fff;
+  border-radius: 12px;
+  border: 2px solid #fff;
+  padding: 0.3125rem 0.625rem;
+  transition: border-color 0.15s ease;
+  box-sizing: border-box;
+}
+
+.bright-contrast #brightContrast,
+.dyslexia-body #dyslexia,
+.uncolor-body #uncolor,
+.blackCursor #blackCursor,
+.whiteCursor #whiteCursor,
+.speech-enable #speech {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3e%3cpath d='M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z' fill='%23ADD129'/%3e%3c/svg%3e ");
+  background-size: auto 15px;
+  background-repeat: no-repeat;
+  background-position: bottom 10px right 10px;
+  border: 2px solid var(--main-brand-color);
+}
