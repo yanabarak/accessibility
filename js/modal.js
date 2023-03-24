@@ -51,17 +51,21 @@ $(document).ready(function () {
 
   function getVoices(code) {
     return new Promise((resolve, reject) => {
-      let voices = speechSynthesis.getVoices();
-      if (!voices.length) {
-        let utterance = new SpeechSynthesisUtterance('');
-        speechSynthesis.speak(utterance);
-        voices = speechSynthesis.getVoices();
+      function waitForVoices() {
+        let voices = speechSynthesis.getVoices();
+        if (voices.length > 0) {
+          if (code != 'en') {
+            voices = voices.filter(voice => voice.lang.startsWith(code));
+          } else {
+            let eng_voices = voices.filter(voice => voice.name == 'Daniel');
+            voices = eng_voices.length ? eng_voices : voices;
+          }
+          resolve(voices);
+        } else {
+          setTimeout(waitForVoices, 50);
+        }
       }
-      console.log(code);
-      if (code != 'en') {
-        voices = voices.filter(voice => voice.lang.startsWith(code));
-      }
-      resolve(voices);
+      waitForVoices();
     });
   }
 
@@ -77,9 +81,6 @@ $(document).ready(function () {
     speakData.lang = result;
     let voices = await getVoices(result);
     speakData.voice = voices[0];
-    if ((result = 'en')) {
-      speakData.voice = voices[14];
-    }
     // pass the SpeechSynthesisUtterance to speechSynthesis.speak to start speaking
     await new Promise((resolve, reject) => {
       speakData.onend = () => {
