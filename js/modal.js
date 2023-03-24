@@ -67,7 +67,7 @@ $(document).ready(function () {
 
   async function speak(text, rate, pitch, volume, target) {
     let result = await getLanguage(text);
-    console.log('res', res);
+    console.log('res', result);
     // create a SpeechSynthesisUtterance to configure the how text to be spoken
     let speakData = new SpeechSynthesisUtterance();
     speakData.volume = volume; // From 0 to 1
