@@ -57,7 +57,7 @@ $(document).ready(function () {
         speechSynthesis.speak(utterance);
         voices = speechSynthesis.getVoices();
       }
-      console.log(cose);
+      console.log(code);
       if (code != 'en') {
         voices = voices.filter(voice => voice.lang.startsWith(code));
       }
