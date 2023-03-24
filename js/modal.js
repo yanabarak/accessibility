@@ -22,45 +22,84 @@ $(document).ready(function () {
   closeBtn.forEach(c => c.addEventListener('click', closeModal));
 
   // speech
+  function getLanguage(text) {
+    return new Promise((resolve, reject) => {
+      let key = 'b6289798405742ffbfe8f9b8d57cec77';
+      let endpoint = 'https://api.cognitive.microsofttranslator.com';
+      let location = 'westeurope';
+      let xhr = new XMLHttpRequest();
+      let url = endpoint + '/detect?api-version=3.0';
+      let data = [{ text: text }];
 
-  function getVoices() {
-    let voices = speechSynthesis.getVoices();
-    if (!voices.length) {
-      // some time the voice will not be initialized so we can call spaek with empty string
-      // this will initialize the voices
-      let utterance = new SpeechSynthesisUtterance('');
-      speechSynthesis.speak(utterance);
-      voices = speechSynthesis.getVoices();
-    }
-    return voices;
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            resolve(JSON.parse(xhr.responseText)[0].language);
+          } else {
+            reject(new Error(`Error ${xhr.status}: ${xhr.statusText}`));
+          }
+        }
+      };
+
+      xhr.open('POST', url, true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.setRequestHeader('Ocp-Apim-Subscription-Key', key);
+      xhr.setRequestHeader('Ocp-Apim-Subscription-Region', location);
+      xhr.send(JSON.stringify(data));
+    });
   }
 
-  function speak(text, voice, rate, pitch, volume) {
+  function getVoices(code) {
+    return new Promise((resolve, reject) => {
+      let voices = speechSynthesis.getVoices();
+      if (!voices.length) {
+        let utterance = new SpeechSynthesisUtterance('');
+        speechSynthesis.speak(utterance);
+        voices = speechSynthesis.getVoices();
+      }
+      if (code != 'en') {
+        voices = voices.filter(voice => voice.lang.startsWith(code));
+      }
+      resolve(voices);
+    });
+  }
+
+  async function speak(text, rate, pitch, volume, target) {
+    let result = await getLanguage(text);
     // create a SpeechSynthesisUtterance to configure the how text to be spoken
     let speakData = new SpeechSynthesisUtterance();
     speakData.volume = volume; // From 0 to 1
     speakData.rate = rate; // From 0.1 to 10
     speakData.pitch = pitch; // From 0 to 2
     speakData.text = text;
-    speakData.lang = 'en';
-    speakData.voice = voice;
-
+    speakData.lang = result;
+    let voices = await getVoices(result);
+    speakData.voice = voices[0];
+    if ((result = 'en')) {
+      speakData.voice = voices[14];
+    }
     // pass the SpeechSynthesisUtterance to speechSynthesis.speak to start speaking
-    speechSynthesis.speak(speakData);
+    await new Promise((resolve, reject) => {
+      speakData.onend = () => {
+        resolve();
+
+        target.style.removeProperty('background-color');
+      };
+      speakData.onerror = error => {
+        reject(error);
+      };
+      speechSynthesis.speak(speakData);
+    });
   }
   var speech = function speech(event) {
-    // msg.text = e.target.innerText;
-    console.log(event);
-    $(event.target).style.backgroundColor = 'yellow';
+    event.target.style.backgroundColor = 'yellow';
 
-    speak(event.target.innerText, msg.voice, rate, pitch, volume);
+    let rate = 0.9,
+      pitch = 1,
+      volume = 1;
+    let msg = new SpeechSynthesisUtterance();
 
-    let interval = setInterval(() => {
-      if (!speechSynthesis.speaking) {
-        $(event.target).style.removeProperty('background-color');
-        clearInterval(interval);
-      }
-    }, 100);
+    speak(event.target.innerText, rate, pitch, volume, event.target);
   };
   function speechDisable() {
     if ('speechSynthesis' in window) {
@@ -68,17 +107,10 @@ $(document).ready(function () {
       tags.forEach(tag => {
         tag.removeEventListener('click', speech);
       });
-      console.log(1);
     }
   }
   function speechEnable() {
     if ('speechSynthesis' in window) {
-      let voices = getVoices();
-      let rate = 0.9,
-        pitch = 1,
-        volume = 1;
-      let msg = new SpeechSynthesisUtterance();
-      msg.voice = voices[1];
       let tags = document.querySelectorAll('p,a,h1,h2,h3, td, label, b, span'); // add more tags for you project
       tags.forEach(tag => {
         tag.addEventListener('click', speech);
@@ -162,7 +194,7 @@ $(document).ready(function () {
         $('body').append(
           `<link class="dyslexia-font" href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;700&display=swap" rel="stylesheet">`
         );
-        $('body *').css('font-family', 'Lexend');
+        $('body *').css('font-family', 'Lexend, sans-serif');
       } else {
         $('html').removeClass('dyslexia-body');
         $('.dyslexia-font').remove();
