@@ -20,7 +20,7 @@
   align-items: flex-end;
   overflow: hidden;
   transition: all 0.3s;
-  z-index: 100000;
+  z-index: 10000;
   visibility: hidden;
   opacity: 0;
   box-shadow: 0px 4px 4px #e6f2f2;
@@ -43,6 +43,9 @@
   gap: 15px;
   padding-bottom: 15px;
   box-sizing: border-box;
+
+  overflow-y: auto;
+  max-height: calc(100% - 70px);
 }
 
 .modal__img {
@@ -188,15 +191,70 @@
   box-sizing: border-box;
 }
 
-.bright-contrast #brightContrast,
-.dyslexia-body #dyslexia,
-.uncolor-body #uncolor,
-.blackCursor #blackCursor,
-.whiteCursor #whiteCursor,
-.speech-enable #speech {
+#clearFeature {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  font-size: 16px;
+  border-radius: 12px;
+  background-color: #d00;
+  padding: 10px;
+}
+
+.feature-bright-contrast #brightContrast,
+.feature-dyslexia-body #dyslexia,
+.feature-uncolor-body #uncolor,
+.feature-blackCursor #blackCursor,
+.feature-whiteCursor #whiteCursor,
+.feature-speech-enable #speech,
+.feature-tab-enable #tabNav,
+.feature-read-mask #readMask,
+.feature-read-guide #readGuide {
   background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3e%3cpath d='M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z' fill='%23ADD129'/%3e%3c/svg%3e ");
   background-size: auto 15px;
   background-repeat: no-repeat;
   background-position: bottom 10px right 10px;
   border: 2px solid var(--main-brand-color);
+}
+
+#pointer-dot {
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  border: 0px solid white;
+  position: absolute;
+  border-radius: 4px;
+  z-index: 1;
+  pointer-events: none;
+  transition: border-color 0.5s;
+}
+
+#pointer-ring {
+  left: 0;
+  top: 0;
+  width: 500px;
+  height: 0;
+  padding: 15px;
+  border: 1px solid #333 !important;
+  position: absolute;
+  border-radius: 100px;
+  z-index: 100000;
+  pointer-events: none;
+  margin-left: -250px;
+  background-color: #333;
+}
+.feature-read-guide {
+  overflow-x: hidden;
+}
+
+#pointer-ring::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 0;
+  border-width: 8px 10.5px 0 10.5px;
+  border-color: #333 transparent transparent transparent;
+  border-style: solid;
+  left: 250px;
+  margin-left: 238px;
 }
