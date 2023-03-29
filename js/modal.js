@@ -518,16 +518,21 @@ $(document).ready(function () {
     let questionArea = document.querySelector('#question-area');
     let tabIdx = 1;
     let childElements = questionArea.querySelectorAll(
-      'p, label, td, b, span.questText, .questDiv, span.radioAnswers'
+      'p, label, td, b, span.questText, .questDiv, span.radioAnswers, input'
     );
     console.log(childElements);
 
     childElements.forEach(elem => {
       let hasText = false;
       let children = elem.childNodes;
+      if (elem.localName == 'input') {
+        hasText = true;
+      }
       for (let i = 0; i < children.length; i++) {
         if (elem.classList.contains('radioAnswers')) {
-          hasText = true;
+          if (children[i].childNodes[0].nodeType !== 1) {
+            hasText = true;
+          }
           break;
         }
         if (children[i].nodeType === 3 && children[i].textContent.trim().length > 0) {
@@ -561,13 +566,10 @@ $(document).ready(function () {
     let oldStyle = $(evt.target).attr('style') ? $(evt.target).attr('style') : '';
 
     var attr = $(evt.target).attr('tabindex');
-
-    // For some browsers, `attr` is undefined; for others,
-    // `attr` is false.  Check for both.
     if (typeof attr !== 'undefined' && attr !== false) {
       $(evt.target).attr(
         'style',
-        'outline: 0 !important;background: #000 !important;color: #fff !important;-webkit-box-shadow: none !important;box-shadow: none !important;text-shadow: none!important;' +
+        'outline: 0 !important;background: #000 !important;color: #fff !important;-webkit-box-shadow: none !important;box-shadow: 0 0 0 2px #000 !important;text-shadow: none!important;' +
           oldStyle
       );
     }

@@ -252,9 +252,11 @@
   display: block;
   width: 0;
   height: 0;
-  border-width: 8px 10.5px 0 10.5px;
-  border-color: #333 transparent transparent transparent;
+
+  border-width: 0 7.5px 9px 7.5px;
+  border-color: transparent transparent #333333 transparent;
   border-style: solid;
   left: 250px;
   margin-left: 238px;
+  margin-top: -9px;
 }
