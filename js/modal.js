@@ -460,6 +460,7 @@ $(document).ready(function () {
     });
   }
 
+  let bg = '';
   async function speak(text, rate, pitch, volume, target) {
     let result = await getLanguage(text);
     console.log('res', result);
@@ -476,8 +477,10 @@ $(document).ready(function () {
     await new Promise((resolve, reject) => {
       speakData.onend = () => {
         resolve();
-
         target.style.removeProperty('background-color');
+        if (bg) {
+          target.style.backgroundColor = bg;
+        }
       };
       speakData.onerror = error => {
         reject(error);
@@ -486,6 +489,9 @@ $(document).ready(function () {
     });
   }
   var speech = function speech(event) {
+    if (event.target.style.backgroundColor) {
+      bg = event.target.style.backgroundColor;
+    }
     event.target.style.backgroundColor = 'yellow';
 
     let rate = 0.9,
@@ -547,12 +553,12 @@ $(document).ready(function () {
     });
   }
 
-  function removeTabIndex() {
-    $('[tabindex]').removeAttr('tabindex');
+  function speechTab(evt) {
+    console.log('focus');
+    $(evt.target).click();
   }
-
   function highlightElement(evt) {
-    let prevSelected = document.querySelector('[style*="-webkit-box-shadow"]');
+    let prevSelected = document.querySelector('[style*="box-shadow"]');
     if (prevSelected && prevSelected !== evt.target) {
       $(prevSelected).css({
         outline: '',
@@ -567,11 +573,22 @@ $(document).ready(function () {
 
     var attr = $(evt.target).attr('tabindex');
     if (typeof attr !== 'undefined' && attr !== false) {
+      if ($('.feature-speech-enable').length && $(evt.target).hasClass('SpepeateRadio')) {
+      } else {
+        $(evt.target).attr(
+          'style',
+          'outline: 0 !important;background: #E1F2F5 !important;color: #000 !important;-webkit-box-shadow: none !important;box-shadow: 0 0 0 2px #E1F2F5 !important;text-shadow: none!important;' +
+            oldStyle
+        );
+      }
+    }
+    if ($('.feature-speech-enable').length && !$(evt.target).hasClass('SpepeateRadio')) {
       $(evt.target).attr(
         'style',
-        'outline: 0 !important;background: #000 !important;color: #fff !important;-webkit-box-shadow: none !important;box-shadow: 0 0 0 2px #000 !important;text-shadow: none!important;' +
+        'outline: 0 !important;background: #E1F2F5 !important;color: #000 !important;-webkit-box-shadow: none !important;box-shadow: 0 0 0 2px #E1F2F5 !important;text-shadow: none!important;' +
           oldStyle
       );
+      $(evt.target).click();
     }
   }
 
@@ -733,6 +750,7 @@ $(document).ready(function () {
         $('html').removeClass('feature-tab-enable');
         removeTabIndex();
         questionArea.removeEventListener('focusin', highlightElement);
+        questionArea.removeEventListener('focus', speechTab);
         let prevSelected = document.querySelector('[style*="-webkit-box-shadow"]');
         $(prevSelected).css({
           outline: '',
