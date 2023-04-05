@@ -478,11 +478,6 @@ $(document).ready(function () {
     speakData.lang = result;
     let voices = await getVoices(result);
     speakData.voice = voices[0];
-
-    if (result == 'en') {
-      speakData.rate = 0.85;
-      speakData.pitch = 1;
-    }
     // pass the SpeechSynthesisUtterance to speechSynthesis.speak to start speaking
     await new Promise((resolve, reject) => {
       speakData.onend = () => {
@@ -501,11 +496,7 @@ $(document).ready(function () {
     });
   }
   var speech = function speech(event) {
-    if (
-      $(event.target).css('background') == 'rgb(255, 255, 0)' ||
-      $(event.target).css('background') == 'yellow' ||
-      $(event.target)[0].localName == 'textarea'
-    ) {
+    if ($(event.target).css('background') == 'rgb(255, 255, 0)') {
       return;
     }
     if (event.target.style.backgroundColor) {
@@ -530,7 +521,7 @@ $(document).ready(function () {
   }
   function speechEnable() {
     if ('speechSynthesis' in window) {
-      let tags = document.querySelectorAll('p,a,h1,h2,h3, td, label, b, span, textarea'); // add more tags for you project
+      let tags = document.querySelectorAll('p,a,h1,h2,h3, td, label, b, span'); // add more tags for you project
       tags.forEach(tag => {
         tag.addEventListener('click', speech);
       });
@@ -543,14 +534,13 @@ $(document).ready(function () {
     let questionArea = document.querySelector('#question-area');
     let tabIdx = 1;
     let childElements = questionArea.querySelectorAll(
-      'p, label, td, b, span.questText, .questDiv, span.radioAnswers, input, button, span, textarea'
+      'p, label, td, b, span.questText, .questDiv, span.radioAnswers, input'
     );
 
-    start_button;
     childElements.forEach(elem => {
       let hasText = false;
       let children = elem.childNodes;
-      if (elem.localName == 'input' || elem.localName == 'button' || elem.localName == 'textarea') {
+      if (elem.localName == 'input') {
         hasText = true;
       }
       for (let i = 0; i < children.length; i++) {
@@ -610,7 +600,7 @@ $(document).ready(function () {
       } else {
         $(evt.target).attr(
           'style',
-          'outline: 0 !important;background: #3395FF !important;color: #000 !important;-webkit-box-shadow: none !important;box-shadow: 0 0 0 2px #3395FF !important;text-shadow: none!important;' +
+          'outline: 0 !important;background: #E1F2F5 !important;color: #000 !important;-webkit-box-shadow: none !important;box-shadow: 0 0 0 2px #E1F2F5 !important;text-shadow: none!important;' +
             oldStyle
         );
       }
@@ -618,7 +608,7 @@ $(document).ready(function () {
     if ($('.feature-speech-enable').length && !$(evt.target).hasClass('SpepeateRadio')) {
       $(evt.target).attr(
         'style',
-        'outline: 0 !important;background: #3395FF !important;color: #000 !important;-webkit-box-shadow: none !important;box-shadow: 0 0 0 2px #3395FF !important;text-shadow: none!important;' +
+        'outline: 0 !important;background: #E1F2F5 !important;color: #000 !important;-webkit-box-shadow: none !important;box-shadow: 0 0 0 2px #E1F2F5 !important;text-shadow: none!important;' +
           oldStyle
       );
       $(evt.target).click();
@@ -810,30 +800,81 @@ $(document).ready(function () {
     });
 
   // speech for textareas
-
-  var questDiv,
-    final_span,
-    interim_span,
-    start_button,
-    start_img,
-    info,
-    info_start,
-    info_allow,
-    info_speak_now,
-    info_no_speech,
-    info_upgrade,
-    info_blocked,
-    info_denied,
-    info_no_microphone;
-  // showInfo('info_start');
+  showInfo('info_start');
   var final_transcript = '';
   var recognizing = false;
   var ignore_onend;
   var start_timestamp;
+  if (!('webkitSpeechRecognition' in window)) {
+    upgrade();
+  } else {
+    var recognition = new webkitSpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.onstart = function () {
+      recognizing = true;
+      showInfo('info_speak_now');
+      start_img.src =
+        'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22none%22%20d%3D%22M0%200h24v24H0V0z%22%2F%3E%3Cpath%20d%3D%22M9%2013c2.21%200%204-1.79%204-4s-1.79-4-4-4-4%201.79-4%204%201.79%204%204%204zm0-6c1.1%200%202%20.9%202%202s-.9%202-2%202-2-.9-2-2%20.9-2%202-2zm0%208c-2.67%200-8%201.34-8%204v2h16v-2c0-2.66-5.33-4-8-4zm-6%204c.22-.72%203.31-2%206-2%202.7%200%205.8%201.29%206%202H3zM15.08%207.05c.84%201.18.84%202.71%200%203.89l1.68%201.69c2.02-2.02%202.02-5.07%200-7.27l-1.68%201.69zM20.07%202l-1.63%201.63c2.77%203.02%202.77%207.56%200%2010.74L20.07%2016c3.9-3.89%203.91-9.95%200-14z%22%2F%3E%3C%2Fsvg%3E';
+    };
+    recognition.onerror = function (event) {
+      if (event.error == 'no-speech') {
+        start_img.src =
+          'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22none%22%20d%3D%22M0%200h24v24H0V0z%22%2F%3E%3Cpath%20d%3D%22M12%206v3l4-4-4-4v3c-4.42%200-8%203.58-8%208%200%201.57.46%203.03%201.24%204.26L6.7%2014.8c-.45-.83-.7-1.79-.7-2.8%200-3.31%202.69-6%206-6zm6.76%201.74L17.3%209.2c.44.84.7%201.79.7%202.8%200%203.31-2.69%206-6%206v-3l-4%204%204%204v-3c4.42%200%208-3.58%208-8%200-1.57-.46-3.03-1.24-4.26z%22%2F%3E%3C%2Fsvg%3E';
+        showInfo('info_no_speech');
+        ignore_onend = true;
+      }
+      if (event.error == 'audio-capture') {
+        start_img.src =
+          'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22none%22%20d%3D%22M0%200h24v24H0V0z%22%2F%3E%3Cpath%20d%3D%22M12%2015c1.66%200%202.99-1.34%202.99-3L15%206c0-1.66-1.34-3-3-3S9%204.34%209%206v6c0%201.66%201.34%203%203%203zm-1.2-9.1c0-.66.54-1.2%201.2-1.2s1.2.54%201.2%201.2l-.01%206.2c0%20.66-.53%201.2-1.19%201.2s-1.2-.54-1.2-1.2V5.9zm6.5%206.1c0%203-2.54%205.1-5.3%205.1S6.7%2015%206.7%2012H5c0%203.41%202.72%206.23%206%206.72V22h2v-3.28c3.28-.48%206-3.3%206-6.72h-1.7z%22%2F%3E%3C%2Fsvg%3E';
+        showInfo('info_no_microphone');
+        ignore_onend = true;
+      }
+      if (event.error == 'not-allowed') {
+        if (event.timeStamp - start_timestamp < 100) {
+          showInfo('info_blocked');
+        } else {
+          showInfo('info_denied');
+        }
+        ignore_onend = true;
+      }
+    };
+    recognition.onend = function () {
+      recognizing = false;
+      if (ignore_onend) {
+        return;
+      }
+      start_img.src =
+        'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22none%22%20d%3D%22M0%200h24v24H0V0z%22%2F%3E%3Cpath%20d%3D%22M12%2015c1.66%200%202.99-1.34%202.99-3L15%206c0-1.66-1.34-3-3-3S9%204.34%209%206v6c0%201.66%201.34%203%203%203zm-1.2-9.1c0-.66.54-1.2%201.2-1.2s1.2.54%201.2%201.2l-.01%206.2c0%20.66-.53%201.2-1.19%201.2s-1.2-.54-1.2-1.2V5.9zm6.5%206.1c0%203-2.54%205.1-5.3%205.1S6.7%2015%206.7%2012H5c0%203.41%202.72%206.23%206%206.72V22h2v-3.28c3.28-.48%206-3.3%206-6.72h-1.7z%22%2F%3E%3C%2Fsvg%3E';
+      if (!final_transcript) {
+        showInfo('info_start');
+        return;
+      }
+      showInfo('');
+      if (window.getSelection) {
+        window.getSelection().removeAllRanges();
+        var range = document.createRange();
+        range.selectNode(document.getElementById('final_span'));
+        window.getSelection().addRange(range);
+      }
+    };
+    recognition.onresult = function (event) {
+      var interim_transcript = '';
+      for (var i = event.resultIndex; i < event.results.length; ++i) {
+        if (event.results[i].isFinal) {
+          final_transcript += event.results[i][0].transcript;
+        } else {
+          interim_transcript += event.results[i][0].transcript;
+        }
+      }
+      final_transcript = capitalize(final_transcript);
+      final_span.innerHTML = linebreak(final_transcript);
+      interim_span.innerHTML = linebreak(interim_transcript);
+    };
+  }
   function upgrade() {
-    $('.info_start').css('display', 'none');
-    $('.info_upgrade').css('display', 'inline');
-    $('button.start_button').css('display', 'none');
+    start_button.style.visibility = 'hidden';
+    showInfo('info_upgrade');
   }
   var two_line = /\n\n/g;
   var one_line = /\n/g;
@@ -850,7 +891,7 @@ $(document).ready(function () {
     if (s) {
       for (var child = info.firstChild; child; child = child.nextSibling) {
         if (child.style) {
-          child.style.display = child == s ? 'inline' : 'none';
+          child.style.display = child.id == s ? 'inline' : 'none';
         }
       }
       info.style.visibility = 'visible';
@@ -858,118 +899,26 @@ $(document).ready(function () {
       info.style.visibility = 'hidden';
     }
   }
-  if (!('webkitSpeechRecognition' in window)) {
-    // upgrade();
-    // return;
-    var recognition;
-  } else {
-    var recognition = new webkitSpeechRecognition();
-  }
 
-  function speechStartBtn(event) {
-    start_button = $(event.target)[0];
-    questDiv = $(event.target).closest('.questDiv');
-    final_span = questDiv.find('.final_span')[0];
-    interim_span = questDiv.find('.interim_span')[0];
-    start_img = questDiv.find('.start_img')[0];
-    info = questDiv.find('.info-speech')[0];
-    info_allow = questDiv.find('.info_allow')[0];
-    info_start = questDiv.find('.info_start')[0];
-    info_blocked = questDiv.find('.info_blocked')[0];
-    info_denied = questDiv.find('.info_denied')[0];
-    info_speak_now = questDiv.find('.info_speak_now')[0];
-    info_no_speech = questDiv.find('.info_no_speech')[0];
-    info_no_microphone = questDiv.find('.info_no_microphone')[0];
-
-    var textarea = questDiv.find('textarea')[0];
-    let textareaText = $($(textarea)[0]).val();
-
-    if (recognizing) {
-      recognition.stop();
-      return;
-    }
-
-    if (!('webkitSpeechRecognition' in window)) {
-      upgrade();
-    } else {
-      start_button.style.display = 'inline-block';
-      recognition.continuous = true;
-      recognition.interimResults = true;
-      recognition.onstart = function () {
-        recognizing = true;
-        showInfo(info_speak_now);
-        start_img.src =
-          'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22none%22%20d%3D%22M0%200h24v24H0V0z%22%2F%3E%3Cpath%20d%3D%22M9%2013c2.21%200%204-1.79%204-4s-1.79-4-4-4-4%201.79-4%204%201.79%204%204%204zm0-6c1.1%200%202%20.9%202%202s-.9%202-2%202-2-.9-2-2%20.9-2%202-2zm0%208c-2.67%200-8%201.34-8%204v2h16v-2c0-2.66-5.33-4-8-4zm-6%204c.22-.72%203.31-2%206-2%202.7%200%205.8%201.29%206%202H3zM15.08%207.05c.84%201.18.84%202.71%200%203.89l1.68%201.69c2.02-2.02%202.02-5.07%200-7.27l-1.68%201.69zM20.07%202l-1.63%201.63c2.77%203.02%202.77%207.56%200%2010.74L20.07%2016c3.9-3.89%203.91-9.95%200-14z%22%2F%3E%3C%2Fsvg%3E';
-      };
-      recognition.onerror = function (event) {
-        if (event.error == 'no-speech') {
-          start_img.src =
-            'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22none%22%20d%3D%22M0%200h24v24H0V0z%22%2F%3E%3Cpath%20d%3D%22M12%206v3l4-4-4-4v3c-4.42%200-8%203.58-8%208%200%201.57.46%203.03%201.24%204.26L6.7%2014.8c-.45-.83-.7-1.79-.7-2.8%200-3.31%202.69-6%206-6zm6.76%201.74L17.3%209.2c.44.84.7%201.79.7%202.8%200%203.31-2.69%206-6%206v-3l-4%204%204%204v-3c4.42%200%208-3.58%208-8%200-1.57-.46-3.03-1.24-4.26z%22%2F%3E%3C%2Fsvg%3E';
-          showInfo(info_no_speech);
-          ignore_onend = true;
-        }
-        if (event.error == 'audio-capture') {
-          start_img.src =
-            'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22none%22%20d%3D%22M0%200h24v24H0V0z%22%2F%3E%3Cpath%20d%3D%22M12%2015c1.66%200%202.99-1.34%202.99-3L15%206c0-1.66-1.34-3-3-3S9%204.34%209%206v6c0%201.66%201.34%203%203%203zm-1.2-9.1c0-.66.54-1.2%201.2-1.2s1.2.54%201.2%201.2l-.01%206.2c0%20.66-.53%201.2-1.19%201.2s-1.2-.54-1.2-1.2V5.9zm6.5%206.1c0%203-2.54%205.1-5.3%205.1S6.7%2015%206.7%2012H5c0%203.41%202.72%206.23%206%206.72V22h2v-3.28c3.28-.48%206-3.3%206-6.72h-1.7z%22%2F%3E%3C%2Fsvg%3E';
-          showInfo(info_no_microphone);
-          ignore_onend = true;
-        }
-        if (event.error == 'not-allowed') {
-          if (event.timeStamp - start_timestamp < 100) {
-            showInfo(info_blocked);
-          } else {
-            showInfo(info_denied);
-          }
-          ignore_onend = true;
-        }
-      };
-      recognition.onend = function () {
-        recognizing = false;
-        if (ignore_onend) {
-          return;
-        }
-        start_img.src =
-          'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22none%22%20d%3D%22M0%200h24v24H0V0z%22%2F%3E%3Cpath%20d%3D%22M12%2015c1.66%200%202.99-1.34%202.99-3L15%206c0-1.66-1.34-3-3-3S9%204.34%209%206v6c0%201.66%201.34%203%203%203zm-1.2-9.1c0-.66.54-1.2%201.2-1.2s1.2.54%201.2%201.2l-.01%206.2c0%20.66-.53%201.2-1.19%201.2s-1.2-.54-1.2-1.2V5.9zm6.5%206.1c0%203-2.54%205.1-5.3%205.1S6.7%2015%206.7%2012H5c0%203.41%202.72%206.23%206%206.72V22h2v-3.28c3.28-.48%206-3.3%206-6.72h-1.7z%22%2F%3E%3C%2Fsvg%3E';
-        if (!final_transcript) {
-          showInfo(info_start);
-          return;
-        }
-
-        showInfo(info_start);
-        if (window.getSelection) {
-          window.getSelection().removeAllRanges();
-          var range = document.createRange();
-          range.selectNode(final_span);
-          window.getSelection().addRange(range);
-        }
-      };
-      recognition.onresult = function (event) {
-        var interim_transcript = '';
-        for (var i = event.resultIndex; i < event.results.length; ++i) {
-          if (event.results[i].isFinal) {
-            final_transcript += event.results[i][0].transcript;
-            $($(textarea)[0]).val(textareaText + ' ' + final_transcript);
-          } else {
-            interim_transcript += event.results[i][0].transcript;
-            $($(textarea)[0]).val(textareaText + ' ' + final_transcript + interim_transcript);
-          }
-        }
-        final_transcript = capitalize(final_transcript);
-        final_span.innerHTML = linebreak(final_transcript);
-        interim_span.innerHTML = linebreak(interim_transcript);
-      };
-    }
-    final_transcript = '';
-    recognition.lang = $('body').attr('data-lang');
-    recognition.start();
-    ignore_onend = false;
-    final_span.innerHTML = '';
-    interim_span.innerHTML = '';
-    start_img.src =
-      'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22none%22%20d%3D%22M0%200h24v24H0V0z%22%2F%3E%3Cpath%20d%3D%22M10.8%204.9c0-.66.54-1.2%201.2-1.2s1.2.54%201.2%201.2l-.01%203.91L15%2010.6V5c0-1.66-1.34-3-3-3-1.54%200-2.79%201.16-2.96%202.65l1.76%201.76V4.9zM19%2011h-1.7c0%20.58-.1%201.13-.27%201.64l1.27%201.27c.44-.88.7-1.87.7-2.91zM4.41%202.86L3%204.27l6%206V11c0%201.66%201.34%203%203%203%20.23%200%20.44-.03.65-.08l1.66%201.66c-.71.33-1.5.52-2.31.52-2.76%200-5.3-2.1-5.3-5.1H5c0%203.41%202.72%206.23%206%206.72V21h2v-3.28c.91-.13%201.77-.45%202.55-.9l4.2%204.2%201.41-1.41L4.41%202.86z%22%2F%3E%3C%2Fsvg%3E';
-    showInfo(info_allow);
-    start_timestamp = event.timeStamp;
-  }
+  $(document)
+    .off('click', '#start_button')
+    .on('click', '#start_button', function (event) {
+      event.preventDefault();
+      if (recognizing) {
+        recognition.stop();
+        return;
+      }
+      final_transcript = '';
+      recognition.lang = $('body').attr('data-lang');
+      recognition.start();
+      ignore_onend = false;
+      final_span.innerHTML = '';
+      interim_span.innerHTML = '';
+      start_img.src =
+        'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22none%22%20d%3D%22M0%200h24v24H0V0z%22%2F%3E%3Cpath%20d%3D%22M10.8%204.9c0-.66.54-1.2%201.2-1.2s1.2.54%201.2%201.2l-.01%203.91L15%2010.6V5c0-1.66-1.34-3-3-3-1.54%200-2.79%201.16-2.96%202.65l1.76%201.76V4.9zM19%2011h-1.7c0%20.58-.1%201.13-.27%201.64l1.27%201.27c.44-.88.7-1.87.7-2.91zM4.41%202.86L3%204.27l6%206V11c0%201.66%201.34%203%203%203%20.23%200%20.44-.03.65-.08l1.66%201.66c-.71.33-1.5.52-2.31.52-2.76%200-5.3-2.1-5.3-5.1H5c0%203.41%202.72%206.23%206%206.72V21h2v-3.28c.91-.13%201.77-.45%202.55-.9l4.2%204.2%201.41-1.41L4.41%202.86z%22%2F%3E%3C%2Fsvg%3E';
+      showInfo('info_allow');
+      start_timestamp = event.timeStamp;
+    });
   // buttons events
 
   $(document)
@@ -1276,66 +1225,6 @@ $(document).ready(function () {
       }
     });
 
-  var speechHTML = ` <div class="center speech-group">
-                            <div class="info-speech">
-                            <p class="info_start" style="display: none">Click on the microphone icon and begin speaking
-                            </p>
-                            <p class="info_speak_now" style="display: none">Speak now.</p>
-                            <p class="info_no_speech" style="display: none">No speech was detected. You may need to
-                                adjust your microphone
-                                settings.
-                            </p>
-                            <p class="info_no_microphone" style="display:none">No microphone was found. Ensure that a
-                                microphone is installed and
-                                that settings are configured correctly.</p>
-                            <p class="info_allow" style="display: none">Click the "Allow" button above to enable your
-                                microphone.</p>
-                            <p class="info_denied" style="display: none">Permission to use microphone was denied.</p>
-                            <p class="info_blocked" style="display: none">Permission to use microphone is blocked.</p>
-                            <p class="info_upgrade" style="display: none">Web Speech API is not supported by this
-                                browser.</p>
-                        </div>
-                            <button class="start_button" type="button">
-                                <img class="start_img"
-                                    src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22none%22%20d%3D%22M0%200h24v24H0V0z%22%2F%3E%3Cpath%20d%3D%22M12%2015c1.66%200%202.99-1.34%202.99-3L15%206c0-1.66-1.34-3-3-3S9%204.34%209%206v6c0%201.66%201.34%203%203%203zm-1.2-9.1c0-.66.54-1.2%201.2-1.2s1.2.54%201.2%201.2l-.01%206.2c0%20.66-.53%201.2-1.19%201.2s-1.2-.54-1.2-1.2V5.9zm6.5%206.1c0%203-2.54%205.1-5.3%205.1S6.7%2015%206.7%2012H5c0%203.41%202.72%206.23%206%206.72V22h2v-3.28c3.28-.48%206-3.3%206-6.72h-1.7z%22%2F%3E%3C%2Fsvg%3E"
-                                    alt="Start">
-                            </button>
-                           
-                        <div class="results" style="display: none;">
-                            <span class="final_span" class="final"></span>
-                            <span class="interim_span" class="interim"></span>
-                            <p>
-                        </div>
-                        </div>`;
-
-  $(document)
-    .off('click touchstart', '#speechTextarea')
-    .on('click touchstart', '#speechTextarea', function () {
-      let startBtn;
-      if (!$('.feature-speech').length) {
-        $('html').addClass('feature-speech');
-        if ($('.questDiv').length) {
-          $('.questDiv').append(speechHTML);
-          $('.info_start').css('display', 'inline');
-          $('.info-speech').css('visibility', 'visible');
-
-          startBtn = $('.start_button');
-          if (!('webkitSpeechRecognition' in window)) {
-            upgrade();
-            return;
-          }
-          startBtn.on('click', function (event) {
-            event.preventDefault(); // prevent form submission
-            speechStartBtn(event);
-          });
-        }
-      } else {
-        $('html').removeClass('feature-speech');
-        startBtn = $('.start_button');
-        startBtn.off('click');
-        $('.speech-group').remove();
-      }
-    });
   // clear button
   $(document)
     .off('click touchstart', '#clearFeature')
@@ -1356,7 +1245,6 @@ $(document).ready(function () {
         'feature-hide-img': '#hideImg',
         'feature-zoom': '#zoom',
         'feature-tooltip': '#tooltip',
-        'feature-speech': '#speechTextarea',
       };
 
       for (var feature in featureButtons) {
