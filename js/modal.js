@@ -1528,32 +1528,32 @@ $(document).ready(function () {
       }
     });
 
-  $(document)
-    .off('click touchstart', '#blind')
-    .on('click touchstart', '#blind', function () {
-      if (!$('.feature-blind-profile').length) {
-        $('html').addClass('feature-blind-profile');
-        clearFeature();
-        $('#speechTextarea').trigger('click');
-        $('#speech').trigger('click');
-      } else {
-        $('html').removeClass('feature-blind-profile');
-        clearFeature();
-      }
-    });
+  // $(document)
+  //   .off('click touchstart', '#blind')
+  //   .on('click touchstart', '#blind', function () {
+  //     if (!$('.feature-blind-profile').length) {
+  //       $('html').addClass('feature-blind-profile');
+  //       clearFeature();
+  //       $('#speechTextarea').trigger('click');
+  //       $('#speech').trigger('click');
+  //     } else {
+  //       $('html').removeClass('feature-blind-profile');
+  //       clearFeature();
+  //     }
+  //   });
 
-  $(document)
-    .off('click touchstart', '#keyboard')
-    .on('click touchstart', '#keyboard', function () {
-      if (!$('.feature-keyboard-profile').length) {
-        $('html').addClass('feature-keyboard-profile');
-        clearFeature();
-        $('#tabNav').trigger('click');
-      } else {
-        $('html').removeClass('feature-keyboard-profile');
-        clearFeature();
-      }
-    });
+  // $(document)
+  //   .off('click touchstart', '#keyboard')
+  //   .on('click touchstart', '#keyboard', function () {
+  //     if (!$('.feature-keyboard-profile').length) {
+  //       $('html').addClass('feature-keyboard-profile');
+  //       clearFeature();
+  //       $('#tabNav').trigger('click');
+  //     } else {
+  //       $('html').removeClass('feature-keyboard-profile');
+  //       clearFeature();
+  //     }
+  //   });
   // clear button
 
   function clearFeature() {
