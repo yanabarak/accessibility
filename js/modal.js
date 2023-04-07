@@ -498,6 +498,7 @@ $(document).ready(function () {
   // }
 
   async function speak(text, rate, pitch, volume, target) {
+    speechSynthesis.cancel();
     let result = await getLanguage(text);
     let speakData = new SpeechSynthesisUtterance();
     speakData.volume = volume;
@@ -1043,6 +1044,9 @@ $(document).ready(function () {
           '-webkit-filter: grayscale(1) !important;filter: grayscale(1) !important;backdrop-filter: grayscale(1) !important;'
         );
       } else {
+        $('html').removeClass(
+          'feature-epilepsy-profile feature-vision-profile feature-cognitive-profile feature-adha-profile feature-blind-profile feature-keyboard-profile'
+        );
         $('html').removeClass('feature-uncolor-body');
         $('html').css({
           '-webkit-filter': '',
@@ -1089,6 +1093,9 @@ $(document).ready(function () {
           }</style > `
         );
       } else {
+        $('html').removeClass(
+          'feature-epilepsy-profile feature-vision-profile feature-cognitive-profile feature-adha-profile feature-blind-profile feature-keyboard-profile'
+        );
         $('html').removeClass('feature-bright-contrast');
         $('body').css({
           background: '',
@@ -1145,6 +1152,9 @@ $(document).ready(function () {
         });
         $(this).addClass(`dyslexia-${dyslexia}`);
       } else {
+        $('html').removeClass(
+          'feature-epilepsy-profile feature-vision-profile feature-cognitive-profile feature-adha-profile feature-blind-profile feature-keyboard-profile'
+        );
         $('html').removeClass('feature-dyslexia-body');
         $('body *').css('font-family', '');
         $(this).removeClass(function (index, className) {
@@ -1178,6 +1188,9 @@ $(document).ready(function () {
           </style > `
         );
       } else {
+        $('html').removeClass(
+          'feature-epilepsy-profile feature-vision-profile feature-cognitive-profile feature-adha-profile feature-blind-profile feature-keyboard-profile'
+        );
         $('body').removeClass('feature-blackCursor');
         $('.feature-blackCursor').remove();
       }
@@ -1215,6 +1228,9 @@ $(document).ready(function () {
       speechCount++;
       speechSynthesis.cancel();
       if (speechCount == 4 && $('.feature-speech-enable').length) {
+        $('html').removeClass(
+          'feature-epilepsy-profile feature-vision-profile feature-cognitive-profile feature-adha-profile feature-blind-profile feature-keyboard-profile'
+        );
         $('html').removeClass('feature-speech-enable');
         speechDisable();
         speechCount = 0;
@@ -1246,6 +1262,9 @@ $(document).ready(function () {
         addTabIndex();
         questionArea.addEventListener('focusin', highlightElement);
       } else {
+        $('html').removeClass(
+          'feature-epilepsy-profile feature-vision-profile feature-cognitive-profile feature-adha-profile feature-blind-profile feature-keyboard-profile'
+        );
         $('html').removeClass('feature-tab-enable');
         removeTabIndex();
         questionArea.removeEventListener('focusin', highlightElement);
@@ -1269,6 +1288,9 @@ $(document).ready(function () {
         $('html').addClass('feature-read-mask');
         readingMask.initialize();
       } else {
+        $('html').removeClass(
+          'feature-epilepsy-profile feature-vision-profile feature-cognitive-profile feature-adha-profile feature-blind-profile feature-keyboard-profile'
+        );
         $('html').removeClass('feature-read-mask');
         readingMask.removeCanvas();
       }
@@ -1283,6 +1305,9 @@ $(document).ready(function () {
           ringSize: 2,
         });
       } else {
+        $('html').removeClass(
+          'feature-epilepsy-profile feature-vision-profile feature-cognitive-profile feature-adha-profile feature-blind-profile feature-keyboard-profile'
+        );
         $('html').removeClass('feature-read-guide');
         isRunning = false;
         $('#pointer-ring').remove();
@@ -1305,6 +1330,9 @@ $(document).ready(function () {
         });
         fontSizeCount = 0;
       } else {
+        $('html').removeClass(
+          'feature-epilepsy-profile feature-vision-profile feature-cognitive-profile feature-adha-profile feature-blind-profile feature-keyboard-profile'
+        );
         $('html').addClass('feature-font-size');
         $(this).addClass(`font-${fontSizeCount}`);
         fontSizeIncrease();
@@ -1392,6 +1420,9 @@ $(document).ready(function () {
         $('html').addClass('feature-tooltip');
         tooltipEnabled = true;
       } else {
+        $('html').removeClass(
+          'feature-epilepsy-profile feature-vision-profile feature-cognitive-profile feature-adha-profile feature-blind-profile feature-keyboard-profile'
+        );
         $('html').removeClass('feature-tooltip');
         tooltipEnabled = false;
       }
@@ -1460,6 +1491,9 @@ $(document).ready(function () {
           recognition.stop();
         }
 
+        $('html').removeClass(
+          'feature-epilepsy-profile feature-vision-profile feature-cognitive-profile feature-adha-profile feature-blind-profile feature-keyboard-profile'
+        );
         $('html').removeClass('feature-speech');
         startBtn = $('.start_button');
         startBtn.off('click');
