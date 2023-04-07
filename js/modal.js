@@ -466,42 +466,94 @@ $(document).ready(function () {
     });
   }
 
+  let speechSpeed = 1;
   let bg = '';
+  // async function speak(text, rate, pitch, volume, target) {
+  //   let result = await getLanguage(text);
+  //   // create a SpeechSynthesisUtterance to configure the how text to be spoken
+  //   let speakData = new SpeechSynthesisUtterance();
+  //   speakData.volume = volume; // From 0 to 1
+  //   speakData.rate = speechSpeed; // From 0.1 to 10
+  //   speakData.pitch = pitch; // From 0 to 2
+  //   speakData.text = text;
+  //   speakData.lang = result;
+  //   let voices = await getVoices(result);
+  //   speakData.voice = voices[0];
+  //   // pass the SpeechSynthesisUtterance to speechSynthesis.speak to start speaking
+  //   await new Promise((resolve, reject) => {
+  //     speakData.onend = () => {
+  //       resolve();
+  //       target.style.removeProperty('background-color');
+  //       if (bg) {
+  //         if (target.style.boxShadow) {
+  //           target.style.backgroundColor = bg;
+  //         }
+  //       }
+  //     };
+  //     speakData.onerror = error => {
+  //       reject(error);
+  //     };
+  //     speechSynthesis.speak(speakData);
+  //   });
+  // }
+
   async function speak(text, rate, pitch, volume, target) {
     let result = await getLanguage(text);
-    // create a SpeechSynthesisUtterance to configure the how text to be spoken
     let speakData = new SpeechSynthesisUtterance();
-    speakData.volume = volume; // From 0 to 1
-    speakData.rate = rate; // From 0.1 to 10
-    speakData.pitch = pitch; // From 0 to 2
+    speakData.volume = volume;
+    speakData.rate = rate;
+    speakData.pitch = pitch;
     speakData.text = text;
     speakData.lang = result;
     let voices = await getVoices(result);
     speakData.voice = voices[0];
 
-    if (result == 'en') {
-      speakData.rate = 0.85;
-      speakData.pitch = 1;
-    }
-    // pass the SpeechSynthesisUtterance to speechSynthesis.speak to start speaking
-    await new Promise((resolve, reject) => {
-      speakData.onend = () => {
-        resolve();
+    if ($('.feature-tab-enable').length) {
+      // Add event listener to stop speaking when element loses focus
+      target.addEventListener('blur', () => {
+        speechSynthesis.cancel();
         target.style.removeProperty('background-color');
-        if (bg) {
-          if (target.style.boxShadow) {
-            target.style.backgroundColor = bg;
+      });
+      // Check if target element has focus before speaking
+      if (document.activeElement === target) {
+        await new Promise((resolve, reject) => {
+          speakData.onend = () => {
+            resolve();
+            target.style.removeProperty('background-color');
+            if (bg) {
+              if (target.style.boxShadow) {
+                target.style.backgroundColor = bg;
+              }
+            }
+          };
+          speakData.onerror = error => {
+            reject(error);
+          };
+          speechSynthesis.speak(speakData);
+        });
+      }
+    } else {
+      await new Promise((resolve, reject) => {
+        speakData.onend = () => {
+          resolve();
+          target.style.removeProperty('background-color');
+          if (bg) {
+            if (target.style.boxShadow) {
+              target.style.backgroundColor = bg;
+            }
           }
-        }
-      };
-      speakData.onerror = error => {
-        reject(error);
-      };
-      speechSynthesis.speak(speakData);
-    });
+        };
+        speakData.onerror = error => {
+          reject(error);
+        };
+        speechSynthesis.speak(speakData);
+      });
+    }
   }
   var speech = function speech(event) {
     if (
+      $(event.target).css('background-color') == 'rgb(255, 255, 0)' ||
+      $(event.target).css('background-color') == 'yellow' ||
       $(event.target).css('background') == 'rgb(255, 255, 0)' ||
       $(event.target).css('background') == 'yellow' ||
       $(event.target)[0].localName == 'textarea'
@@ -511,9 +563,16 @@ $(document).ready(function () {
     if (event.target.style.backgroundColor) {
       bg = event.target.style.backgroundColor;
     }
+
+    let prevSelected =
+      document.querySelector('[style*="background"]') ||
+      document.querySelector('[style*="background-color"]');
+    $(prevSelected).css({
+      background: '',
+    });
     event.target.style.backgroundColor = 'yellow';
 
-    let rate = 0.9,
+    let rate = speechSpeed,
       pitch = 1,
       volume = 1;
     let msg = new SpeechSynthesisUtterance();
@@ -543,7 +602,7 @@ $(document).ready(function () {
     let questionArea = document.querySelector('#question-area');
     let tabIdx = 1;
     let childElements = questionArea.querySelectorAll(
-      'p, label, td, b, span.questText, .questDiv, span.radioAnswers, input, button, span, textarea'
+      'p, label, td, b, span.questText, .questDiv, span.radioAnswers, input, button, span, textarea, a'
     );
 
     start_button;
@@ -577,7 +636,6 @@ $(document).ready(function () {
   }
 
   function speechTab(evt) {
-    console.log('focus');
     $(evt.target).click();
   }
   function highlightElement(evt) {
@@ -787,7 +845,7 @@ $(document).ready(function () {
   // show tooltip
   var tooltipEnabled = false;
 
-  $('input[type="submit"], button')
+  $('input[type="submit"], button, a')
     .hover(
       function () {
         if (tooltipEnabled) {
@@ -886,6 +944,9 @@ $(document).ready(function () {
 
     if (recognizing) {
       recognition.stop();
+      start_img.src =
+        'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22none%22%20d%3D%22M0%200h24v24H0V0z%22%2F%3E%3Cpath%20d%3D%22M12%2015c1.66%200%202.99-1.34%202.99-3L15%206c0-1.66-1.34-3-3-3S9%204.34%209%206v6c0%201.66%201.34%203%203%203zm-1.2-9.1c0-.66.54-1.2%201.2-1.2s1.2.54%201.2%201.2l-.01%206.2c0%20.66-.53%201.2-1.19%201.2s-1.2-.54-1.2-1.2V5.9zm6.5%206.1c0%203-2.54%205.1-5.3%205.1S6.7%2015%206.7%2012H5c0%203.41%202.72%206.23%206%206.72V22h2v-3.28c3.28-.48%206-3.3%206-6.72h-1.7z%22%2F%3E%3C%2Fsvg%3E';
+      showInfo(info_no_microphone);
       return;
     }
 
@@ -1036,19 +1097,62 @@ $(document).ready(function () {
       }
     });
 
+  let dyslexia = 0;
   $(document)
     .off('click touchstart', '#dyslexia')
     .on('click touchstart', '#dyslexia', function () {
-      if (!$('.feature-dyslexia-body').length) {
+      dyslexia++;
+
+      if (dyslexia == 1) {
         $('html').addClass('feature-dyslexia-body');
         $('body').append(
           `<link class="dyslexia-font" href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;700&display=swap" rel="stylesheet">`
         );
         $('body *').css('font-family', 'Lexend, sans-serif');
-      } else {
-        $('html').removeClass('feature-dyslexia-body');
+        $(this).addClass(`dyslexia-${dyslexia}`);
+      } else if (dyslexia == 2) {
         $('.dyslexia-font').remove();
         $('body *').css('font-family', '');
+        $('body').append(
+          ` <style type="text/css" class="open-dyslexic">
+        @font-face {
+            font-family: OpenDyslexic;
+            font-weight: normal;
+            src: url("./fonts/OpenDyslexic/OpenDyslexic-Regular.otf") format("opentype");
+        }
+        @font-face {
+            font-family: OpenDyslexic;
+            font-weight: bold;
+            src: url("./fonts/OpenDyslexic/OpenDyslexic-Bold.otf") format("opentype");
+        }
+        @font-face {
+            font-family: OpenDyslexic;
+            font-weight: bold;
+            font-style: italic;
+            src: url("./fonts/OpenDyslexic/OpenDyslexic-BoldItalic.otf") format("opentype");
+        }
+        @font-face {
+            font-family: OpenDyslexic;
+            font-weight: normal;
+            font-style: italic;
+            src: url("./fonts/OpenDyslexic/OpenDyslexic-Italic.otf") format("opentype");
+        }
+    </style>`
+        );
+        $('body *').css('font-family', 'OpenDyslexic, sans-serif');
+        $(this).removeClass(function (index, className) {
+          return (className.match(/(^|\s)dyslexia-\S+/g) || []).join(' ');
+        });
+        $(this).addClass(`dyslexia-${dyslexia}`);
+      } else {
+        $('html').removeClass('feature-dyslexia-body');
+        $('body *').css('font-family', '');
+        $(this).removeClass(function (index, className) {
+          return (className.match(/(^|\s)dyslexia-\S+/g) || []).join(' ');
+        });
+        $('.dyslexia-font').remove();
+        $('.open-dyslexic').remove();
+        dyslexia = 0;
       }
     });
 
@@ -1104,15 +1208,32 @@ $(document).ready(function () {
       }
     });
 
+  let speechCount = 0;
   $(document)
     .off('click touchstart', '#speech')
     .on('click touchstart', '#speech', function () {
-      if (!$('.feature-speech-enable').length) {
-        $('html').addClass('feature-speech-enable');
-        speechEnable();
-      } else {
+      speechCount++;
+      speechSynthesis.cancel();
+      if (speechCount == 4 && $('.feature-speech-enable').length) {
         $('html').removeClass('feature-speech-enable');
         speechDisable();
+        speechCount = 0;
+        $(this).removeClass(function (index, className) {
+          return (className.match(/(^|\s)speechCount-\S+/g) || []).join(' ');
+        });
+      } else {
+        $('html').addClass('feature-speech-enable');
+        speechEnable();
+        $(this).removeClass(function (index, className) {
+          return (className.match(/(^|\s)speechCount-\S+/g) || []).join(' ');
+        });
+
+        if (speechCount == 2) {
+          speechSpeed = 0.7;
+        } else if (speechCount == 3) {
+          speechSpeed = 1.2;
+        }
+        $(this).addClass(`speechCount-${speechCount}`);
       }
     });
 
@@ -1312,13 +1433,18 @@ $(document).ready(function () {
     .off('click touchstart', '#speechTextarea')
     .on('click touchstart', '#speechTextarea', function () {
       let startBtn;
+      let questionArea = document.querySelector('#question-area ');
       if (!$('.feature-speech').length) {
         $('html').addClass('feature-speech');
         if ($('.questDiv').length) {
           $('.questDiv').append(speechHTML);
           $('.info_start').css('display', 'inline');
           $('.info-speech').css('visibility', 'visible');
-
+          if ($('.feature-tab-enable').length) {
+            removeTabIndex();
+            addTabIndex();
+            questionArea.addEventListener('focusin', highlightElement);
+          }
           startBtn = $('.start_button');
           if (!('webkitSpeechRecognition' in window)) {
             upgrade();
@@ -1330,50 +1456,151 @@ $(document).ready(function () {
           });
         }
       } else {
+        if (recognizing) {
+          recognition.stop();
+        }
+
         $('html').removeClass('feature-speech');
         startBtn = $('.start_button');
         startBtn.off('click');
         $('.speech-group').remove();
       }
     });
+
+  // profiles
+
+  $(document)
+    .off('click touchstart', '#epilepsy')
+    .on('click touchstart', '#epilepsy', function () {
+      if (!$('.feature-epilepsy-profile').length) {
+        $('html').addClass('feature-epilepsy-profile');
+        clearFeature();
+        $('#uncolor').trigger('click');
+        $('#brightContrast').trigger('click');
+      } else {
+        $('html').removeClass('feature-epilepsy-profile');
+        clearFeature();
+      }
+    });
+
+  $(document)
+    .off('click touchstart', '#vision')
+    .on('click touchstart', '#vision', function () {
+      if (!$('.feature-vision-profile').length) {
+        $('html').addClass('feature-vision-profile');
+        clearFeature();
+        $('#fontSize').trigger('click');
+        $('#dyslexia').trigger('click');
+        $('#blackCursor').trigger('click');
+        $('#tooltip').trigger('click');
+      } else {
+        $('html').removeClass('feature-vision-profile');
+        clearFeature();
+      }
+    });
+
+  $(document)
+    .off('click touchstart', '#cognitive')
+    .on('click touchstart', '#cognitive', function () {
+      if (!$('.feature-cognitive-profile').length) {
+        $('html').addClass('feature-cognitive-profile');
+        clearFeature();
+        $('#fontSize').trigger('click');
+        $('#readGuide').trigger('click');
+        $('#tooltip').trigger('click');
+      } else {
+        $('html').removeClass('feature-cognitive-profile');
+        clearFeature();
+      }
+    });
+
+  $(document)
+    .off('click touchstart', '#adha')
+    .on('click touchstart', '#adha', function () {
+      if (!$('.feature-adha-profile').length) {
+        $('html').addClass('feature-adha-profile');
+        clearFeature();
+        $('#uncolor').trigger('click');
+        $('#readMask').trigger('click');
+      } else {
+        $('html').removeClass('feature-adha-profile');
+        clearFeature();
+      }
+    });
+
+  $(document)
+    .off('click touchstart', '#blind')
+    .on('click touchstart', '#blind', function () {
+      if (!$('.feature-blind-profile').length) {
+        $('html').addClass('feature-blind-profile');
+        clearFeature();
+        $('#speechTextarea').trigger('click');
+        $('#speech').trigger('click');
+      } else {
+        $('html').removeClass('feature-blind-profile');
+        clearFeature();
+      }
+    });
+
+  $(document)
+    .off('click touchstart', '#keyboard')
+    .on('click touchstart', '#keyboard', function () {
+      if (!$('.feature-keyboard-profile').length) {
+        $('html').addClass('feature-keyboard-profile');
+        clearFeature();
+        $('#tabNav').trigger('click');
+      } else {
+        $('html').removeClass('feature-keyboard-profile');
+        clearFeature();
+      }
+    });
   // clear button
+
+  function clearFeature() {
+    var featureButtons = {
+      'feature-bright-contrast': '#brightContrast',
+      'feature-dyslexia-body': '#dyslexia',
+      'feature-uncolor-body': '#uncolor',
+      'feature-blackCursor': '#blackCursor',
+      'feature-whiteCursor': '#whiteCursor',
+      'feature-speech-enable': '#speech',
+      'feature-tab-enable': '#tabNav',
+      'feature-read-mask': '#readMask',
+      'feature-read-guide': '#readGuide',
+      'feature-font-size': '#fontSize',
+      'feature-spacing': '#spacing',
+      'feature-lineHeight': '#lineHeight',
+      'feature-hide-img': '#hideImg',
+      'feature-zoom': '#zoom',
+      'feature-tooltip': '#tooltip',
+      'feature-speech': '#speechTextarea',
+    };
+
+    for (var feature in featureButtons) {
+      if ($('body').hasClass(feature) || $('html').hasClass(feature)) {
+        if (feature == 'feature-font-size') {
+          fontSizeCount = 3;
+        }
+        if (feature == 'feature-dyslexia-body') {
+          dyslexia = 2;
+        }
+        if (feature == 'feature-spacing') {
+          spacing = 2;
+        }
+        if (feature == 'feature-lineHeight') {
+          spacing = 2;
+        }
+        if (feature == 'feature-speech-enable') {
+          speechCount = 3;
+        }
+
+        $(featureButtons[feature]).click();
+      }
+    }
+  }
   $(document)
     .off('click touchstart', '#clearFeature')
     .on('click touchstart', '#clearFeature', function () {
-      var featureButtons = {
-        'feature-bright-contrast': '#brightContrast',
-        'feature-dyslexia-body': '#dyslexia',
-        'feature-uncolor-body': '#uncolor',
-        'feature-blackCursor': '#blackCursor',
-        'feature-whiteCursor': '#whiteCursor',
-        'feature-speech-enable': '#speech',
-        'feature-tab-enable': '#tabNav',
-        'feature-read-mask': '#readMask',
-        'feature-read-guide': '#readGuide',
-        'feature-font-size': '#fontSize',
-        'feature-spacing': '#spacing',
-        'feature-lineHeight': '#lineHeight',
-        'feature-hide-img': '#hideImg',
-        'feature-zoom': '#zoom',
-        'feature-tooltip': '#tooltip',
-        'feature-speech': '#speechTextarea',
-      };
-
-      for (var feature in featureButtons) {
-        if ($('body').hasClass(feature) || $('html').hasClass(feature)) {
-          if (feature == 'feature-font-size') {
-            fontSizeCount = 3;
-            console.log(fontSizeCount);
-          }
-          if (feature == 'feature-spacing') {
-            spacing = 2;
-          }
-          if (feature == 'feature-lineHeight') {
-            spacing = 2;
-          }
-
-          $(featureButtons[feature]).click();
-        }
-      }
+      clearFeature();
     });
 });

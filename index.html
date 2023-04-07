@@ -1735,6 +1735,34 @@
             padding: 0 .225em
         }
     </style>
+
+    <style type="text/css" class="open-dyslexic">
+        @font-face {
+            font-family: OpenDyslexic;
+            font-weight: normal;
+            src: url("./fonts/OpenDyslexic/OpenDyslexic-Regular.otf") format("opentype");
+        }
+
+        @font-face {
+            font-family: OpenDyslexic;
+            font-weight: bold;
+            src: url("./fonts/OpenDyslexic/OpenDyslexic-Bold.otf") format("opentype");
+        }
+
+        @font-face {
+            font-family: OpenDyslexic;
+            font-weight: bold;
+            font-style: italic;
+            src: url("./fonts/OpenDyslexic/OpenDyslexic-BoldItalic.otf") format("opentype");
+        }
+
+        @font-face {
+            font-family: OpenDyslexic;
+            font-weight: normal;
+            font-style: italic;
+            src: url("./fonts/OpenDyslexic/OpenDyslexic-Italic.otf") format("opentype");
+        }
+    </style>
     <script type="text/javascript">jwplayer.key = "j/PCE3wrfLhplrbG/pDQYdJqPIDuA257/+Tfaw2zIfI=";</script>
     <link rel="icon" href="https://eu.checker-soft.com/demo/checker-files/media/68/pictures/favicon.png"
         type="image/png">
@@ -1878,7 +1906,6 @@
                     <div class="questionnaire_text" style="">
                         <p>
                             Hello!</p>
-
                         <div class="questDiv" id="obj240454-miSection" style="display:"><textarea data-minlength="0"
                                 data-maxlength="0" data-chartext="%d תווים הוקלדו"
                                 onkeyup="countChar(this,$(this).attr('data-minlength'),$(this).attr('data-maxlength'),$(this).attr('data-chartext'),'obj240454')"
@@ -2230,6 +2257,7 @@
                                                         value="Continue" onclick="" title="">
                                                     <script
                                                         language="JavaScript">var preset_button_to_submit = 'continue'; var last_input_object = '346087';</script>
+                                                    <a href="#"> Cancel</a>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -2271,6 +2299,27 @@
             </button>
         </div>
         <div class="modal__content" id="modal-content">
+            <div class="block-profiles">
+                <div class="feature__block" id="epilepsy">
+                    Epilepsy safe profile
+                </div>
+                <div class="feature__block" id="vision">
+                    Vision Impaired profile
+                </div>
+                <div class="feature__block" id="cognitive">
+                    Cognitive Disability profile
+                </div>
+                <div class="feature__block" id="adha">
+                    ADHA Friendly profile
+                </div>
+                <div class="feature__block" id="blind">
+                    Blind User profile
+                </div>
+                <div class="feature__block" id="keyboard">
+                    Keyboard Navigation profile
+                </div>
+                <hr />
+            </div>
             <div class="feature__block" id="uncolor">
                 Uncolor
             </div>
@@ -2279,6 +2328,7 @@
             </div>
             <div class="feature__block" id="dyslexia">
                 Dyslexia
+                <span class="dyslexia"><span>Legible font</span><span>Dyslexia font</span></span>
             </div>
             <div class="feature__block" id="blackCursor">
                 Big black cursor
@@ -2318,7 +2368,7 @@
                 Speech reorganization
             </div>
             <div class="feature__block" id="speech">
-                Screen reader
+                Screen reader<span class="speech"><span>Normal</span><span>Slow</span><span>Fast</span></span>
             </div>
             <div class="feature__block" id="tabNav">
                 Tab navigation

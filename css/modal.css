@@ -215,7 +215,13 @@
 .feature-lineHeight #lineHeight,
 .feature-hide-img #hideImg,
 .feature-tooltip #tooltip,
-.feature-speech #speechTextarea {
+.feature-speech #speechTextarea,
+.feature-epilepsy-profile.feature-uncolor-body.feature-bright-contrast #epilepsy,
+.feature-vision-profile.feature-font-size.feature-dyslexia-body.feature-tooltip #vision,
+.feature-cognitive-profile.feature-font-size.feature-read-guide.feature-tooltip #cognitive,
+.feature-adha-profile.feature-uncolor-body.feature-read-mask #adha,
+.feature-blind-profile.feature-speech.feature-speech-enable #blind,
+.feature-keyboard-profile.feature-tab-enable #keyboard {
   background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3e%3cpath d='M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z' fill='%23ADD129'/%3e%3c/svg%3e ");
   background-size: auto 15px;
   background-repeat: no-repeat;
@@ -270,7 +276,9 @@
 
 .font,
 .space,
-.lineHeight {
+.lineHeight,
+.dyslexia,
+.speech {
   display: flex;
   width: 90%;
   gap: 5px;
@@ -313,7 +321,17 @@
 #fontSize.font-3 .font > span:nth-child(3) {
   background-color: var(--main-brand-color);
 }
-
+#dyslexia .dyslexia > span,
+#speech .speech > span {
+  display: none;
+}
+#dyslexia.dyslexia-1 .dyslexia > span:first-child,
+#speech.speechCount-1 .speech > span:first-child,
+#dyslexia.dyslexia-2 .dyslexia > span:nth-child(2),
+#speech.speechCount-2 .speech > span:nth-child(2),
+#speech.speechCount-3 .speech > span:nth-child(3) {
+  display: block;
+}
 .tooltip {
   position: absolute;
   background-color: #333;
@@ -409,4 +427,18 @@ p.info_no_speech,
 p.info_no_microphone,
 p.info_upgrade {
   color: #d00;
+}
+
+.block-profiles {
+  grid-column-start: 1;
+  grid-column-end: 4;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 15px;
+  box-sizing: border-box;
+}
+hr {
+  grid-column-start: 1;
+  grid-column-end: 4;
+  width: 100%;
 }
