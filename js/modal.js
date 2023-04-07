@@ -1473,8 +1473,8 @@ $(document).ready(function () {
     .off('click touchstart', '#epilepsy')
     .on('click touchstart', '#epilepsy', function () {
       if (!$('.feature-epilepsy-profile').length) {
-        $('html').addClass('feature-epilepsy-profile');
         clearFeature();
+        $('html').addClass('feature-epilepsy-profile');
         $('#uncolor').trigger('click');
         $('#brightContrast').trigger('click');
       } else {
@@ -1487,8 +1487,8 @@ $(document).ready(function () {
     .off('click touchstart', '#vision')
     .on('click touchstart', '#vision', function () {
       if (!$('.feature-vision-profile').length) {
-        $('html').addClass('feature-vision-profile');
         clearFeature();
+        $('html').addClass('feature-vision-profile');
         $('#fontSize').trigger('click');
         $('#dyslexia').trigger('click');
         $('#blackCursor').trigger('click');
@@ -1503,8 +1503,8 @@ $(document).ready(function () {
     .off('click touchstart', '#cognitive')
     .on('click touchstart', '#cognitive', function () {
       if (!$('.feature-cognitive-profile').length) {
-        $('html').addClass('feature-cognitive-profile');
         clearFeature();
+        $('html').addClass('feature-cognitive-profile');
         $('#fontSize').trigger('click');
         $('#readGuide').trigger('click');
         $('#tooltip').trigger('click');
@@ -1518,8 +1518,8 @@ $(document).ready(function () {
     .off('click touchstart', '#adha')
     .on('click touchstart', '#adha', function () {
       if (!$('.feature-adha-profile').length) {
-        $('html').addClass('feature-adha-profile');
         clearFeature();
+        $('html').addClass('feature-adha-profile');
         $('#uncolor').trigger('click');
         $('#readMask').trigger('click');
       } else {
@@ -1528,32 +1528,32 @@ $(document).ready(function () {
       }
     });
 
-  // $(document)
-  //   .off('click touchstart', '#blind')
-  //   .on('click touchstart', '#blind', function () {
-  //     if (!$('.feature-blind-profile').length) {
-  //       $('html').addClass('feature-blind-profile');
-  //       clearFeature();
-  //       $('#speechTextarea').trigger('click');
-  //       $('#speech').trigger('click');
-  //     } else {
-  //       $('html').removeClass('feature-blind-profile');
-  //       clearFeature();
-  //     }
-  //   });
+  $(document)
+    .off('click touchstart', '#blind')
+    .on('click touchstart', '#blind', function () {
+      if (!$('.feature-blind-profile').length) {
+        clearFeature();
+        $('html').addClass('feature-blind-profile');
+        $('#speechTextarea').trigger('click');
+        $('#speech').trigger('click');
+      } else {
+        $('html').removeClass('feature-blind-profile');
+        clearFeature();
+      }
+    });
 
-  // $(document)
-  //   .off('click touchstart', '#keyboard')
-  //   .on('click touchstart', '#keyboard', function () {
-  //     if (!$('.feature-keyboard-profile').length) {
-  //       $('html').addClass('feature-keyboard-profile');
-  //       clearFeature();
-  //       $('#tabNav').trigger('click');
-  //     } else {
-  //       $('html').removeClass('feature-keyboard-profile');
-  //       clearFeature();
-  //     }
-  //   });
+  $(document)
+    .off('click touchstart', '#keyboard')
+    .on('click touchstart', '#keyboard', function () {
+      if (!$('.feature-keyboard-profile').length) {
+        clearFeature();
+        $('html').addClass('feature-keyboard-profile');
+        $('#tabNav').trigger('click');
+      } else {
+        $('html').removeClass('feature-keyboard-profile');
+        clearFeature();
+      }
+    });
   // clear button
 
   function clearFeature() {
@@ -1577,6 +1577,9 @@ $(document).ready(function () {
     };
 
     for (var feature in featureButtons) {
+      $('html').removeClass(
+        'feature-epilepsy-profile feature-vision-profile feature-cognitive-profile feature-adha-profile feature-blind-profile feature-keyboard-profile'
+      );
       if ($('body').hasClass(feature) || $('html').hasClass(feature)) {
         if (feature == 'feature-font-size') {
           fontSizeCount = 3;
