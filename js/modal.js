@@ -395,7 +395,8 @@ $(document).ready(function () {
       modalContainer = document.getElementById(modalContent);
 
     if (openBtn && modalContainer) {
-      openBtn.addEventListener('click', () => {
+      openBtn.addEventListener('click', event => {
+        event.preventDefault();
         modalContainer.classList.add('show-accessibility');
       });
     }
@@ -1323,6 +1324,9 @@ $(document).ready(function () {
       fontSizeCount++;
 
       if (fontSizeCount === 4) {
+        $('html').removeClass(
+          'feature-epilepsy-profile feature-vision-profile feature-cognitive-profile feature-adha-profile feature-blind-profile feature-keyboard-profile'
+        );
         $('html').removeClass('feature-font-size');
         fontSizeDecrease();
         $(this).removeClass(function (index, className) {
@@ -1330,9 +1334,6 @@ $(document).ready(function () {
         });
         fontSizeCount = 0;
       } else {
-        $('html').removeClass(
-          'feature-epilepsy-profile feature-vision-profile feature-cognitive-profile feature-adha-profile feature-blind-profile feature-keyboard-profile'
-        );
         $('html').addClass('feature-font-size');
         $(this).addClass(`font-${fontSizeCount}`);
         fontSizeIncrease();
@@ -1640,4 +1641,13 @@ $(document).ready(function () {
     .on('click touchstart', '#clearFeature', function () {
       clearFeature();
     });
+
+  $(function () {
+    $('#accordion').accordion({
+      collapsible: true,
+      active: false,
+      icons: { header: 'icon-down-def', activeHeader: 'icon-down-def' },
+      heightStyle: 'content',
+    });
+  });
 });
