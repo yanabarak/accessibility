@@ -298,6 +298,11 @@
 }
 #open-accessibility-wrap button {
   border: 0px;
+  margin: 0px;
+}
+#open-accessibility-wrap font {
+  font-size: inherit !important;
+  color: inherit;
 }
 .modal {
   height: 100vh;
@@ -404,11 +409,12 @@
   right: 20px;
   opacity: 1;
 }
-.title {
+#modal-container .title {
   margin: 0px;
   font-size: 20px;
   color: #fff;
   text-align: left;
+  position: unset;
 }
 .modal__header {
   background-color: var(--main-brand-color);
