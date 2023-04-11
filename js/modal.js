@@ -407,7 +407,8 @@ $(document).ready(function () {
 
   const closeBtn = document.querySelectorAll('.close-modal');
 
-  function closeModal() {
+  function closeModal(event) {
+    event.preventDefault();
     const modalContainer = document.getElementById('modal-container');
     modalContainer.classList.remove('show-accessibility');
   }
@@ -1638,7 +1639,8 @@ $(document).ready(function () {
   }
   $(document)
     .off('click touchstart', '#clearFeature')
-    .on('click touchstart', '#clearFeature', function () {
+    .on('click touchstart', '#clearFeature', function (event) {
+      event.preventDefault();
       clearFeature();
     });
 

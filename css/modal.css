@@ -357,7 +357,7 @@
 @media screen and (min-width: 576px) {
   .modal__content {
     margin: auto;
-    margin-top: 58px;
+    margin-top: 60px;
     width: 100%;
     border-radius: 1.25rem;
   }
@@ -381,6 +381,7 @@
   right: 20px;
   bottom: 20px;
   transition: transform 0.3s linear;
+  z-index: 100;
 }
 #open-accessibility svg {
   fill: var(--main-brand-color);
@@ -452,7 +453,7 @@
   font-size: 18px;
   line-height: 150%;
   color: #231f20;
-  background-color: transparent;
+  background-color: transparent !important;
   box-shadow: none;
   background-image: none;
   border: 0px solid;
@@ -467,7 +468,7 @@
   position: absolute;
   left: auto;
   right: 0px;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg width='16' height='6' viewBox='0 0 16 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M8.00028 6L15.7945 0H0.206055L8.00028 6Z' fill='%23666666'/%3e%3c/svg%3e ");
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg width='16' height='6' viewBox='0 0 16 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M8.00028 6L15.7945 0H0.206055L8.00028 6Z' fill='%23666666'/%3e%3c/svg%3e ") !important;
   width: 15px;
   height: 6px;
   background-size: contain;
@@ -478,9 +479,10 @@
   transform: rotate(180deg);
 }
 #modal-container #accordion .ui-accordion-content {
-  border: 0px solid;
+  border: 0px solid !important;
   background-color: transparent;
   padding: 0px;
+  margin: 0px !important;
   background-image: none;
 }
 /* #modal-container
