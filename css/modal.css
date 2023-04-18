@@ -418,7 +418,7 @@
 }
 .modal__header {
   background-color: var(--main-brand-color);
-  padding: 17px 26px;
+  padding: 17px 60px 17px 26px;
   position: absolute;
   top: 0px;
   right: 0px;
@@ -570,7 +570,8 @@
 .feature-lineHeight #lineHeight,
 .feature-hide-img #hideImg,
 .feature-tooltip #tooltip,
-.feature-speech #speechTextarea {
+.feature-speech #speechTextarea,
+.feature-voice-commands #voiceCommands {
   box-shadow: inset 0px 0px 0px 1px var(--main-brand-color), 0px 0px 4px rgba(0, 0, 0, 0.1);
   color: var(--main-brand-color);
 }
@@ -635,7 +636,8 @@
 .space,
 .lineHeight,
 .dyslexia,
-.speech {
+.speech,
+.zoom {
   display: flex;
   width: auto;
   gap: 5px;
@@ -645,7 +647,8 @@
 }
 .font > span,
 .space > span,
-.lineHeight > span {
+.lineHeight > span,
+.zoom > span {
   height: 2px;
   border: 0px solid transparent;
   width: 38px;
@@ -654,7 +657,8 @@
 }
 .feature-font-size .font > span,
 .feature-spacing .space > span,
-.feature-lineHeight .lineHeight > span {
+.feature-lineHeight .lineHeight > span,
+.feature-zoom .zoom > span {
   background-color: rgba(0, 123, 255, 0.45);
 }
 #fontSize {
@@ -666,16 +670,23 @@
 #spacing.spacing-1 .space > span:first-child,
 #spacing.spacing-2 .space > span:first-child,
 #lineHeight.lineHeight-1 .lineHeight > span:first-child,
-#lineHeight.lineHeight-2 .lineHeight > span:first-child {
+#lineHeight.lineHeight-2 .lineHeight > span:first-child,
+#zoom.zoomLevel-1 .zoom > span:first-child,
+#zoom.zoomLevel-2 .zoom > span:first-child,
+#zoom.zoomLevel-3 .zoom > span:first-child {
   background-color: var(--main-brand-color);
 }
 
 #fontSize.font-2 .font > span:nth-child(2),
 #spacing.spacing-2 .space > span:nth-child(2),
-#lineHeight.lineHeight-2 .lineHeight > span:nth-child(2) {
+#lineHeight.lineHeight-2 .lineHeight > span:nth-child(2),
+#zoom.zoomLevel-2 .zoom > span:nth-child(2) {
   background-color: var(--main-brand-color);
 }
-#fontSize.font-3 .font > span:nth-child(3) {
+#fontSize.font-3 .font > span:nth-child(2),
+#fontSize.font-3 .font > span:nth-child(3),
+#zoom.zoomLevel-3 .zoom > span:nth-child(2),
+#zoom.zoomLevel-3 .zoom > span:nth-child(3) {
   background-color: var(--main-brand-color);
 }
 #dyslexia .dyslexia > span,
@@ -730,14 +741,14 @@
 }
 
 #results {
-  font-size: 24px;
+  font-size: 14px;
   font-weight: bold;
   border: 2px solid #000;
-  padding: 16px;
+  padding: 5px;
   text-align: center;
-  margin: 2rem auto 1rem;
-  max-width: 550px;
-  min-height: 120px;
+  margin: 0px;
+  min-width: 150px;
+  min-height: 50px;
   background: #fff;
   border-radius: 4px;
 }
@@ -749,7 +760,8 @@ select {
   border-radius: 4px;
   border: 2px solid #000;
 }
-.start_button {
+.start_button,
+#start_button_vc {
   background: none !important;
   box-shadow: none !important;
   padding: 5px !important;
@@ -765,9 +777,11 @@ select {
   min-width: unset !important;
   min-height: unset !important;
 }
-.start_button img {
+.start_button img,
+#start_button_vc img {
   width: 20px;
   height: 20px;
+  display: block !important;
 }
 .speech-group {
   display: flex;
@@ -794,6 +808,31 @@ p.info_upgrade {
   padding: 7px 0px 18px;
 }
 
+div#voice_commands {
+  position: fixed;
+  bottom: 0px;
+  padding: 20px;
+  background-color: #ccc;
+}
+
+span.number-command {
+  position: absolute;
+  top: -10px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  right: -20px;
+  background-color: #027bff;
+  color: #fff;
+  justify-content: center;
+  align-items: center;
+  border-radius: 30px;
+}
+
+span.questText,
+label.control-label {
+  position: relative;
+}
 @media handheld,
   only screen and (min-device-width: 320px) and (max-device-width: 480px),
   only screen and (max-width: 320px),
@@ -806,7 +845,8 @@ p.info_upgrade {
   .space > span,
   .lineHeight > span .font > span,
   .space > span,
-  .lineHeight > span {
+  .lineHeight > span,
+  .zoom > span {
     height: 4px;
     width: 56px;
   }
