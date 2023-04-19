@@ -1173,7 +1173,10 @@ $(document).ready(function () {
   }
 
   function handleVoiceCommand(command) {
-    let com = command.toLowerCase().trim();
+    let com = command
+      .toLowerCase()
+      .trim()
+      .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '');
     if (com.indexOf('select') >= 0) {
       if (com.indexOf('question') >= 0) {
         selectQGroup(com);
@@ -2054,8 +2057,13 @@ $(document).ready(function () {
       let questionArea = document.querySelector('#question-area ');
       if (!$('.feature-speech').length) {
         $('html').addClass('feature-speech');
-        if ($('.questDiv').length) {
-          $('.questDiv').append(speechHTML);
+        if ($('.questDiv textarea').length) {
+          // $('.questDiv').append(speechHTML);
+
+          $('.questDiv textarea').each(function () {
+            console.log($(this).closest('.questDiv'));
+            $($(this).closest('.questDiv')).append(speechHTML);
+          });
           $('.info_start').css('display', 'inline');
           $('.info-speech').css('visibility', 'visible');
           if ($('.feature-tab-enable').length) {
@@ -2192,18 +2200,16 @@ $(document).ready(function () {
   $(document)
     .off('click touchstart', '#voiceCommands')
     .on('click touchstart', '#voiceCommands', function () {
+      let startBtn = document.querySelector('#start_button_vc');
       if (!$('.feature-voice-commands').length) {
         selectGroups();
         $('html').addClass('feature-voice-commands');
-        startBtn = $('#start_button_vc');
         $('#info').html('Click on the microphone icon and begin speaking');
-        startBtn.on('click', function (event) {
-          event.preventDefault(); // prevent form submission
-          speechVoiceCom(event);
-        });
+        startBtn.addEventListener('click', speechVoiceCom);
         startBtn.click();
       } else {
         stopVNav();
+        startBtn.removeEventListener('click', speechVoiceCom);
       }
     });
 
