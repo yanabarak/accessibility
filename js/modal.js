@@ -1050,17 +1050,26 @@ $(document).ready(function () {
     const questTextElements = $('.questText, .control-label');
     let i = 0;
     questTextElements.each(function () {
-      i++;
-      const questTextElement = $(this);
-      $(questTextElement).append(`<span class="number-command">${i}</span>`);
-      const closestElement = questTextElement.nextAll('.radioAnswersDiv, .questDiv, table').first();
-      if (closestElement.length) {
-        const inBetweenElements = questTextElement.nextUntil(closestElement);
-        let group = [questTextElement.get(0), closestElement.get(0)];
-        if (inBetweenElements.length) {
-          group = group.concat(inBetweenElements.get());
+      let index1 = $(this).index();
+      let index2 = $(this).nextAll('.radioAnswersDiv, .questDiv, table').first().index();
+      let index3 = $(this).nextAll('.questText, .control-label').first().index();
+      if (!(index2 < index1 || index2 > index3)) {
+        i++;
+        const questTextElement = $(this);
+        $(questTextElement).append(`<span class="number-command">${i}</span>`);
+        const closestElement = questTextElement
+          .nextAll('.radioAnswersDiv, .questDiv, table')
+          .first();
+        if (closestElement.length) {
+          // console.log(index1, index2, index3, index2 < index1 || index2 > index3);
+
+          const inBetweenElements = questTextElement.nextUntil(closestElement);
+          let group = [questTextElement.get(0), closestElement.get(0)];
+          if (inBetweenElements.length) {
+            group = group.concat(inBetweenElements.get());
+          }
+          groups.push(group);
         }
-        groups.push(group);
       }
     });
   }
@@ -1532,7 +1541,7 @@ $(document).ready(function () {
   $(function () {
     $('#voice_commands_acc').accordion({
       collapsible: true,
-      // active: false,
+      active: $('#goBack').length,
       icons: { header: 'icon-down-def', activeHeader: 'icon-down-def' },
       heightStyle: 'content',
     });
