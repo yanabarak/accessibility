@@ -411,19 +411,22 @@
 }
 #modal-container .title {
   margin: 0px;
-  font-size: 20px;
+  font-size: 20px !important;
   color: #fff;
   text-align: left;
   position: unset;
 }
 .modal__header {
   background-color: var(--main-brand-color);
-  padding: 17px 60px 17px 26px;
+  padding: 0px 60px 0px 26px;
   position: absolute;
   top: 0px;
   right: 0px;
   left: 0px;
   overflow: visible;
+  height: 58px;
+  display: flex;
+  align-items: center;
 }
 .modal__footer {
   position: absolute;
@@ -548,10 +551,10 @@
   background-color: transparent;
   padding: 0px;
   position: absolute;
-  color: var(--main-brand-color);
+  color: #ec1c24;
   font-weight: 600;
   text-decoration: underline;
-  top: 9px;
+  top: 12px;
   right: 25px;
 }
 
@@ -811,6 +814,7 @@ p.info_upgrade {
 div#voice_commands {
   position: fixed;
   bottom: 0px;
+  left: 0;
   padding: 20px;
   background-color: #ccc;
 }
