@@ -2411,4 +2411,30 @@ $(document).ready(function () {
     },
     true
   );
+
+  $(document).ready(function () {
+    $('.pop_tooltip')
+      .on('mouseover', function () {
+        tooltip = $(this);
+        tooltip_text = tooltip.attr('data-tip');
+        tooltip_style = tooltip.attr('data-style');
+        tooltip_class = '.' + tooltip_style;
+
+        tooltip.addClass('showed-tooltip');
+        $('body').after('<span class="' + tooltip_style + '">' + tooltip_text + '</span>');
+        console.log(tooltip.offset().top);
+        position_top = tooltip.offset().top - $(tooltip_class).outerHeight() - 10;
+        position_left = tooltip.offset().left;
+
+        $(tooltip_class)
+          .css({ left: position_left, top: position_top })
+          .animate({ opacity: '0.8' }, 200);
+      })
+      .on('mouseout', function () {
+        $(tooltip_class).animate({ opacity: '0', 'margin-left': '0px' }, 200, function () {
+          $(this).remove();
+          tooltip.removeClass('showed-tooltip');
+        });
+      });
+  });
 });
