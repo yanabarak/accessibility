@@ -1219,7 +1219,7 @@ $(document).ready(function () {
       deleteWords(com);
       return;
     }
-    switch (command.toLowerCase().trim()) {
+    switch (com) {
       case 'pause':
         $('#start_button_vc').click();
         break;
