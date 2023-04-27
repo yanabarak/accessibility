@@ -1053,7 +1053,7 @@ $(document).ready(function () {
       let index1 = $(this).index();
       let index2 = $(this).nextAll('.radioAnswersDiv, .questDiv, table').first().index();
       let index3 = $(this).nextAll('.questText, .control-label').first().index();
-      if (!(index2 < index1 || index2 > index3)) {
+      if (!(index2 < index1 || index2 > index3) || index3 == -1) {
         i++;
         const questTextElement = $(this);
         $(questTextElement).append(`<span class="number-command">${i}</span>`);
@@ -1061,8 +1061,6 @@ $(document).ready(function () {
           .nextAll('.radioAnswersDiv, .questDiv, table')
           .first();
         if (closestElement.length) {
-          // console.log(index1, index2, index3, index2 < index1 || index2 > index3);
-
           const inBetweenElements = questTextElement.nextUntil(closestElement);
           let group = [questTextElement.get(0), closestElement.get(0)];
           if (inBetweenElements.length) {
@@ -1109,7 +1107,6 @@ $(document).ready(function () {
     recognitionVC.lang = 'en-US';
     recognitionVC.start();
     recognitionVC.onstart = function () {
-      console.log(1);
       recognizing = true;
       $('#info').html('listening...');
       $(imgVC).attr(
@@ -2093,7 +2090,7 @@ $(document).ready(function () {
           // $('.questDiv').append(speechHTML);
 
           $('.questDiv textarea').each(function () {
-            console.log($(this).closest('.questDiv'));
+            // console.log($(this).closest('.questDiv'));
             $($(this).closest('.questDiv')).append(speechHTML);
           });
           $('.info_start').css('display', 'inline');
@@ -2422,7 +2419,6 @@ $(document).ready(function () {
 
         tooltip.addClass('showed-tooltip');
         $('body').after('<span class="' + tooltip_style + '">' + tooltip_text + '</span>');
-        console.log(tooltip.offset().top);
         position_top = tooltip.offset().top - $(tooltip_class).outerHeight() - 10;
         position_left = tooltip.offset().left;
 
