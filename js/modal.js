@@ -1541,7 +1541,7 @@ $(document).ready(function () {
   $(function () {
     $('#voice_commands_acc').accordion({
       collapsible: true,
-      active: $('#goBack').length,
+      active: true,
       icons: { header: 'icon-down-def', activeHeader: 'icon-down-def' },
       heightStyle: 'content',
     });
@@ -2373,4 +2373,42 @@ $(document).ready(function () {
       heightStyle: 'content',
     });
   });
+  var mousePosition;
+  var offset = [0, 0];
+  var div;
+  var isDown = false;
+
+  div = document.getElementById('voice_commands');
+  div.addEventListener(
+    'mousedown',
+    function (e) {
+      isDown = true;
+      offset = [div.offsetLeft - e.clientX, div.getBoundingClientRect().bottom - e.clientY];
+    },
+    true
+  );
+
+  document.addEventListener(
+    'mouseup',
+    function () {
+      isDown = false;
+    },
+    true
+  );
+
+  document.addEventListener(
+    'mousemove',
+    function (event) {
+      event.preventDefault();
+      if (isDown) {
+        mousePosition = {
+          x: event.clientX,
+          y: event.clientY,
+        };
+        div.style.left = mousePosition.x + offset[0] + 'px';
+        div.style.bottom = window.innerHeight - mousePosition.y - offset[1] + 'px';
+      }
+    },
+    true
+  );
 });

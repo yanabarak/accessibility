@@ -473,7 +473,8 @@
 #modal-container #accordion .ui-accordion-header svg {
   fill: var(--main-brand-color);
 }
-#modal-container #accordion .ui-icon {
+#modal-container #accordion .ui-icon,
+div#voice_commands h3 .ui-icon.icon-down-def {
   position: absolute;
   left: auto;
   right: 0px;
@@ -812,13 +813,111 @@ p.info_upgrade {
 }
 
 div#voice_commands {
+  bottom: -1000px;
+  left: -1000px;
+  transition: all 300ms linear;
+}
+html.feature-voice-commands div#voice_commands {
   position: fixed;
-  bottom: 0px;
-  left: 0;
-  padding: 20px;
-  background-color: #ccc;
+  bottom: 18px;
+  left: 24px;
+  padding: 17px 15px 23px 13px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  width: 280px;
+  box-sizing: border-box;
+  color: #231f20;
 }
 
+div#voice_commands h3 {
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 21px;
+  color: #231f20;
+  border: 0px !important;
+  background: none !important;
+  padding-bottom: 17px;
+  position: relative;
+}
+div#voice_commands h3 .ui-icon.ui-icon-triangle-1-s {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg width='16' height='17' viewBox='0 0 16 17' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3crect y='14.7289' width='20.1298' height='2.17619' rx='1' transform='rotate(-45 0 14.7289)' fill='%2385919E'/%3e%3crect width='20.1298' height='2.17619' rx='1' transform='matrix(-0.707107 -0.707107 -0.707107 0.707107 16 14.2339)' fill='%2385919E'/%3e%3c/svg%3e ");
+  width: 16px;
+  height: 16px;
+  background-size: contain;
+  background-position: center;
+  top: 12px;
+
+  position: absolute;
+  left: auto;
+  right: 0px;
+}
+div#voice_commands .ui-accordion .ui-accordion-content {
+  padding: 18px 0px 24px !important;
+  border: 0px !important;
+  background: none !important;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 6px;
+  align-items: center;
+  border-top: 1px solid rgba(0, 0, 0, 0.25) !important;
+}
+div#voice_commands .ui-accordion .ui-accordion-content p {
+  width: fit-content;
+  float: right;
+  border: 1px solid #007bff;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 8px 10px;
+  font-weight: 400;
+  font-size: 12px;
+  margin: 0px !important;
+  color: #666666;
+}
+div#voice_commands #info {
+  font-size: 11px;
+}
+div#voice_commands #results {
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  height: 53px;
+  box-sizing: border-box;
+  margin-bottom: 5px;
+  background-color: transparent !important;
+}
+
+#start_button_vc {
+  margin-right: 10px;
+  width: 35px !important;
+  height: 35px !important;
+  border: 0px solid !important;
+  background: #007bff !important;
+}
+#start_button_vc img {
+  filter: invert(1);
+}
+
+html.feature-voice-commands div#voice_commands.dark-mode {
+  background: rgba(24, 33, 47, 0.9);
+  color: #fff;
+}
+div#voice_commands.dark-mode h3,
+div#voice_commands.dark-mode .ui-accordion .ui-accordion-content p,
+div#voice_commands.dark-mode .final {
+  color: #fff;
+}
+
+div#voice_commands.dark-mode .ui-accordion .ui-accordion-content {
+  border-top: 1px solid #475569 !important;
+}
+
+div#voice_commands.dark-mode #results {
+  border: 1px solid #475569;
+}
 span.number-command {
   position: absolute;
   top: -10px;
