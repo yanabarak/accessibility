@@ -1327,6 +1327,7 @@ $(document).ready(function () {
   }
 
   function stopVNav() {
+    $('#voice_commands').css({ left: '', bottom: '' });
     $('html').removeClass('feature-voice-commands');
     let prevSelected = $('[style*="box-shadow"]');
     if (prevSelected) {
@@ -2290,6 +2291,10 @@ $(document).ready(function () {
         }
         if (feature == 'feature-dyslexia-body') {
           dyslexia = 2;
+        }
+
+        if (feature == 'feature-voice-commands') {
+          $('#voice_commands').css({ left: '', bottom: '' });
         }
 
         $(featureButtons[feature]).click();

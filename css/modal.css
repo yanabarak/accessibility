@@ -755,6 +755,8 @@ div#voice_commands h3 .ui-icon.icon-down-def {
   min-height: 50px;
   background: #fff;
   border-radius: 4px;
+
+  word-break: break-all;
 }
 
 select {
@@ -887,7 +889,7 @@ div#voice_commands #results {
   border-radius: 5px;
   display: flex;
   align-items: center;
-  height: 53px;
+  min-height: 53px;
   box-sizing: border-box;
   margin-bottom: 5px;
   background-color: transparent !important;
