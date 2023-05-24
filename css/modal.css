@@ -827,7 +827,7 @@ html.feature-voice-commands div#voice_commands {
   bottom: 18px;
   left: 24px;
   padding: 17px 15px 23px 13px;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 1);
   box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
   width: 280px;
@@ -866,12 +866,13 @@ div#voice_commands .ui-accordion .ui-accordion-content {
   gap: 10px 6px;
   align-items: center;
   border-top: 1px solid rgba(0, 0, 0, 0.25) !important;
+  max-height: calc(100vh - 220px);
 }
 div#voice_commands .ui-accordion .ui-accordion-content p {
   width: fit-content;
   float: right;
-  border: 1px solid #007bff;
-  border-radius: 5px;
+  /* border: 1px solid #007bff;
+  border-radius: 5px; */
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -879,7 +880,13 @@ div#voice_commands .ui-accordion .ui-accordion-content p {
   font-weight: 400;
   font-size: 12px;
   margin: 0px !important;
-  color: #666666;
+  color: #166bc7;
+  background: rgba(0, 123, 255, 0.1);
+  border-radius: 2px;
+}
+div#voice_commands .ui-accordion .ui-accordion-content p::before {
+  content: '•';
+  margin-right: 10px;
 }
 div#voice_commands #info {
   font-size: 11px;
@@ -907,7 +914,7 @@ div#voice_commands #results {
 }
 
 html.feature-voice-commands div#voice_commands.dark-mode {
-  background: rgba(24, 33, 47, 0.9);
+  background: rgba(24, 33, 47, 1);
   color: #fff;
 }
 div#voice_commands.dark-mode h3,
@@ -937,11 +944,55 @@ span.number-command {
   border-radius: 30px;
 }
 
+.feature-font-size span.number-command[style*='font-size: 2'],
+.feature-font-size span.number-command[style*='font-size:2'] {
+  width: auto;
+  height: auto;
+  min-width: 30px;
+  margin-right: -5px;
+  margin-top: -5px;
+}
+
+.feature-font-size span.number-command[style*='font-size: 3'],
+.feature-font-size span.number-command[style*='font-size:3'] {
+  width: auto;
+  height: auto;
+  min-width: 40px;
+  margin-right: -10px;
+  margin-top: -10px;
+}
+.feature-font-size span.number-command[style*='font-size: 4'],
+.feature-font-size span.number-command[style*='font-size:4'] {
+  width: auto;
+  height: auto;
+  min-width: 50px;
+  margin-right: -20px;
+  margin-top: -20px;
+}
 span.questText,
 label.control-label {
   position: relative;
 }
+.title-commands {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 16px;
+  text-transform: capitalize;
+  color: #020202;
+  width: 100%;
+}
+.dark-mode .title-commands {
+  color: #fff;
+}
 
+.dark-mode .divider-voice {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.divider-voice {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  width: 100%;
+  margin: 0px 0 8px;
+}
 .tooltip-voice {
   position: absolute;
   opacity: 0;
