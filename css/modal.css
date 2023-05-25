@@ -663,7 +663,7 @@ div#voice_commands h3 .ui-icon.icon-down-def {
 .feature-spacing .space > span,
 .feature-lineHeight .lineHeight > span,
 .feature-zoom .zoom > span {
-  background-color: rgba(0, 123, 255, 0.45);
+  background-color: rgba(0, 123, 255, 0.45) !important;
 }
 #fontSize {
   position: relative;
@@ -678,20 +678,20 @@ div#voice_commands h3 .ui-icon.icon-down-def {
 #zoom.zoomLevel-1 .zoom > span:first-child,
 #zoom.zoomLevel-2 .zoom > span:first-child,
 #zoom.zoomLevel-3 .zoom > span:first-child {
-  background-color: var(--main-brand-color);
+  background-color: var(--main-brand-color) !important;
 }
 
 #fontSize.font-2 .font > span:nth-child(2),
 #spacing.spacing-2 .space > span:nth-child(2),
 #lineHeight.lineHeight-2 .lineHeight > span:nth-child(2),
 #zoom.zoomLevel-2 .zoom > span:nth-child(2) {
-  background-color: var(--main-brand-color);
+  background-color: var(--main-brand-color) !important;
 }
 #fontSize.font-3 .font > span:nth-child(2),
 #fontSize.font-3 .font > span:nth-child(3),
 #zoom.zoomLevel-3 .zoom > span:nth-child(2),
 #zoom.zoomLevel-3 .zoom > span:nth-child(3) {
-  background-color: var(--main-brand-color);
+  background-color: var(--main-brand-color) !important;
 }
 #dyslexia .dyslexia > span,
 #speech .speech > span {
@@ -1019,6 +1019,10 @@ label.control-label {
   position: absolute;
   bottom: -15px;
   left: 10px;
+}
+
+.feature-bright-contrast #close-accessibility svg {
+  fill: #000 !important;
 }
 @media handheld,
   only screen and (min-device-width: 320px) and (max-device-width: 480px),
