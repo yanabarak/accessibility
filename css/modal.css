@@ -1024,6 +1024,10 @@ label.control-label {
 .feature-bright-contrast #close-accessibility svg {
   fill: #000 !important;
 }
+
+label.control-label {
+  display: inline-block;
+}
 @media handheld,
   only screen and (min-device-width: 320px) and (max-device-width: 480px),
   only screen and (max-width: 320px),

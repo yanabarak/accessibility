@@ -1096,7 +1096,7 @@ $(document).ready(function () {
         'src',
         'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22none%22%20d%3D%22M0%200h24v24H0V0z%22%2F%3E%3Cpath%20d%3D%22M12%2015c1.66%200%202.99-1.34%202.99-3L15%206c0-1.66-1.34-3-3-3S9%204.34%209%206v6c0%201.66%201.34%203%203%203zm-1.2-9.1c0-.66.54-1.2%201.2-1.2s1.2.54%201.2%201.2l-.01%206.2c0%20.66-.53%201.2-1.19%201.2s-1.2-.54-1.2-1.2V5.9zm6.5%206.1c0%203-2.54%205.1-5.3%205.1S6.7%2015%206.7%2012H5c0%203.41%202.72%206.23%206%206.72V22h2v-3.28c3.28-.48%206-3.3%206-6.72h-1.7z%22%2F%3E%3C%2Fsvg%3E'
       );
-      $('#info').html('Click on the microphone icon and begin speaking');
+      $('#info').html(voice_commands_lang.click_command);
       recognitionVC = false;
       return;
     }
@@ -1104,11 +1104,12 @@ $(document).ready(function () {
     recognitionVC = new webkitSpeechRecognition();
     recognitionVC.continuous = true;
     recognitionVC.interimResults = true;
-    recognitionVC.lang = 'en-US';
+    // recognitionVC.lang = 'en-US';
+    recognitionVC.lang = browser_lang;
     recognitionVC.start();
     recognitionVC.onstart = function () {
       recognizing = true;
-      $('#info').html('listening...');
+      $('#info').html(voice_commands_lang.listening);
       $(imgVC).attr(
         'src',
         'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22none%22%20d%3D%22M0%200h24v24H0V0z%22%2F%3E%3Cpath%20d%3D%22M9%2013c2.21%200%204-1.79%204-4s-1.79-4-4-4-4%201.79-4%204%201.79%204%204%204zm0-6c1.1%200%202%20.9%202%202s-.9%202-2%202-2-.9-2-2%20.9-2%202-2zm0%208c-2.67%200-8%201.34-8%204v2h16v-2c0-2.66-5.33-4-8-4zm-6%204c.22-.72%203.31-2%206-2%202.7%200%205.8%201.29%206%202H3zM15.08%207.05c.84%201.18.84%202.71%200%203.89l1.68%201.69c2.02-2.02%202.02-5.07%200-7.27l-1.68%201.69zM20.07%202l-1.63%201.63c2.77%203.02%202.77%207.56%200%2010.74L20.07%2016c3.9-3.89%203.91-9.95%200-14z%22%2F%3E%3C%2Fsvg%3E'
@@ -1124,14 +1125,14 @@ $(document).ready(function () {
           if (
             typing &&
             textarea &&
-            final_transcript.toLowerCase().trim() != 'exit' &&
-            final_transcript.toLowerCase().trim().indexOf('delete') < 0
+            final_transcript.toLowerCase().trim() != voice_commands_lang.exit &&
+            final_transcript.toLowerCase().trim().indexOf(voice_commands_lang.delete) < 0
           ) {
             $($(textarea)[0]).val(textareaText.trim() + ' ' + final_transcript.trim());
           } else if (
             typing &&
             textarea &&
-            final_transcript.toLowerCase().trim().indexOf('delete') >= 0
+            final_transcript.toLowerCase().trim().indexOf(voice_commands_lang.delete) >= 0
           ) {
             deleteWords(final_transcript.toLowerCase().trim());
           } else {
@@ -1141,7 +1142,7 @@ $(document).ready(function () {
         } else {
           if (!typing && !textarea) {
             interim_transcript += event.results[i][0].transcript;
-            $('#info').html('listening...');
+            $('#info').html(voice_commands_lang.listening);
           }
           if (!typing && !textarea) {
             final_spanVC.innerHTML = final_transcript;
@@ -1162,7 +1163,7 @@ $(document).ready(function () {
           'src',
           'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22none%22%20d%3D%22M0%200h24v24H0V0z%22%2F%3E%3Cpath%20d%3D%22M12%206v3l4-4-4-4v3c-4.42%200-8%203.58-8%208%200%201.57.46%203.03%201.24%204.26L6.7%2014.8c-.45-.83-.7-1.79-.7-2.8%200-3.31%202.69-6%206-6zm6.76%201.74L17.3%209.2c.44.84.7%201.79.7%202.8%200%203.31-2.69%206-6%206v-3l-4%204%204%204v-3c4.42%200%208-3.58%208-8%200-1.57-.46-3.03-1.24-4.26z%22%2F%3E%3C%2Fsvg%3E'
         );
-        $('#info').html('No speech was detected.');
+        $('#info').html(voice_commands_lang.no_speech_detected);
         ignore_onend = true;
       }
       if (event.error == 'audio-capture') {
@@ -1170,14 +1171,14 @@ $(document).ready(function () {
           'src',
           'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22none%22%20d%3D%22M0%200h24v24H0V0z%22%2F%3E%3Cpath%20d%3D%22M12%2015c1.66%200%202.99-1.34%202.99-3L15%206c0-1.66-1.34-3-3-3S9%204.34%209%206v6c0%201.66%201.34%203%203%203zm-1.2-9.1c0-.66.54-1.2%201.2-1.2s1.2.54%201.2%201.2l-.01%206.2c0%20.66-.53%201.2-1.19%201.2s-1.2-.54-1.2-1.2V5.9zm6.5%206.1c0%203-2.54%205.1-5.3%205.1S6.7%2015%206.7%2012H5c0%203.41%202.72%206.23%206%206.72V22h2v-3.28c3.28-.48%206-3.3%206-6.72h-1.7z%22%2F%3E%3C%2Fsvg%3E'
         );
-        $('#info').html('No microphone was found.');
+        $('#info').html(voice_commands_lang.no_microphone_found);
         ignore_onend = true;
       }
       if (event.error == 'not-allowed') {
         if (event.timeStamp - start_timestamp < 100) {
-          $('#info').html('Permission to use microphone is blocked.');
+          $('#info').html(voice_commands_lang.microphone_permission_blocked);
         } else {
-          $('#info').html('Permission to use microphone was denied.');
+          $('#info').html(voice_commands_lang.microphone_permission_denied);
         }
         ignore_onend = true;
       }
@@ -1189,69 +1190,69 @@ $(document).ready(function () {
       .toLowerCase()
       .trim()
       .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '');
-    if (com.indexOf('select') >= 0) {
-      if (com.indexOf('question') >= 0) {
+    if (com.indexOf(voice_commands_lang.select) >= 0) {
+      if (com.indexOf(voice_commands_lang.question) >= 0) {
         selectQGroup(com);
         return;
-      } else if (com.indexOf('next answer') >= 0) {
+      } else if (com.indexOf(voice_commands_lang.next_answer) >= 0) {
         selectNextAnswer();
         return;
-      } else if (com.indexOf('previous answer') >= 0) {
+      } else if (com.indexOf(voice_commands_lang.previous_answer) >= 0) {
         selectPreviousAnswer();
         return;
-      } else if (com.indexOf('answer') >= 0) {
+      } else if (com.indexOf(voice_commands_lang.answer) >= 0) {
         selectAnswer(com);
         return;
       }
-    } else if (com.startsWith('remove answer')) {
+    } else if (com.startsWith(voice_commands_lang.remove_answer)) {
       unselectAnswer(com);
       return;
-    } else if (com.startsWith('type')) {
+    } else if (com.startsWith(voice_commands_lang.type)) {
       typeInTextarea(com);
       return;
-    } else if (com.startsWith('exit')) {
+    } else if (com.startsWith(voice_commands_lang.exit)) {
       exitTyping();
       return;
-    } else if (com.startsWith('delete')) {
+    } else if (com.startsWith(voice_commands_lang.delete)) {
       deleteWords(com);
       return;
     }
     switch (com) {
-      case 'pause':
+      case voice_commands_lang.pause:
         $('#start_button_vc').click();
         break;
-      case 'next question':
+      case voice_commands_lang.next_question:
         nextElement();
         break;
-      case 'previous question':
+      case voice_commands_lang.previous_question:
         previousElement();
         break;
-      case 'scroll up':
+      case voice_commands_lang.scroll_up:
         scrollUp();
         break;
-      case 'scroll down':
+      case voice_commands_lang.scroll_down:
         scrollDown();
         break;
-      case 'continue':
+      case voice_commands_lang.continue:
         if ($('#continue').length) {
           continueClick();
         }
         break;
-      case 'go back':
+      case voice_commands_lang.go_back:
         if ($('#goBack').length) {
           goBack();
         }
         break;
-      case 'finish survey':
+      case voice_commands_lang.finish_survey:
         if ($('#finishCrit').length) {
           finishCrit();
         }
         break;
-      case 'stop':
+      case voice_commands_lang.stop:
         stopVNav();
         break;
       default:
-        $('#info').html('command not found, pls try again');
+        $('#info').html(voice_commands_lang.command_not_found);
       // Add other voice commands as needed
     }
   }
@@ -1265,7 +1266,7 @@ $(document).ready(function () {
     }
     numb++;
     if (!numb || numb > groups.length) {
-      $('#info').html('Question not found');
+      $('#info').html(voice_commands_lang.question_not_found);
       return;
     }
     selectedEl = groups[numb - 1];
@@ -1273,7 +1274,7 @@ $(document).ready(function () {
     for (var i = 0; i < selectedEl.length; i++) {
       $(selectedEl[i]).css('box-shadow', '0 0 10px blue');
     }
-    $('#info').html('Question selected');
+    $('#info').html(voice_commands_lang.question_selected);
   }
 
   function previousElement() {
@@ -1286,7 +1287,7 @@ $(document).ready(function () {
     numb--;
 
     if (!numb || numb > groups.length) {
-      $('#info').html('Question not found');
+      $('#info').html(voice_commands_lang.question_not_found);
       return;
     }
     selectedEl = groups[numb - 1];
@@ -1295,7 +1296,7 @@ $(document).ready(function () {
       $(selectedEl[i]).css('box-shadow', '0 0 10px blue');
     }
 
-    $('#info').html('Question selected');
+    $('#info').html(voice_commands_lang.question_selected);
   }
 
   function scrollToElem() {
@@ -1342,7 +1343,7 @@ $(document).ready(function () {
       'src',
       'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22none%22%20d%3D%22M0%200h24v24H0V0z%22%2F%3E%3Cpath%20d%3D%22M12%2015c1.66%200%202.99-1.34%202.99-3L15%206c0-1.66-1.34-3-3-3S9%204.34%209%206v6c0%201.66%201.34%203%203%203zm-1.2-9.1c0-.66.54-1.2%201.2-1.2s1.2.54%201.2%201.2l-.01%206.2c0%20.66-.53%201.2-1.19%201.2s-1.2-.54-1.2-1.2V5.9zm6.5%206.1c0%203-2.54%205.1-5.3%205.1S6.7%2015%206.7%2012H5c0%203.41%202.72%206.23%206%206.72V22h2v-3.28c3.28-.48%206-3.3%206-6.72h-1.7z%22%2F%3E%3C%2Fsvg%3E'
     );
-    $('#info').html('Click on the microphone icon and begin speaking');
+    $('#info').html(voice_commands_lang.click_command);
     if (recognitionVC) {
       recognitionVC.stop();
     }
@@ -1363,7 +1364,6 @@ $(document).ready(function () {
       num = command.split(' ');
       num = text2num(num[num.length - 1]);
       if (!num) {
-        console.log('number not found');
         return false;
       }
     }
@@ -1373,7 +1373,7 @@ $(document).ready(function () {
   function selectQGroup(command) {
     numb = textNum(command);
     if (!numb || numb > groups.length) {
-      $('#info').html('Question not found');
+      $('#info').html(voice_commands_lang.question_not_found);
       return;
     }
     let prevSelected = $('[style*="box-shadow"]');
@@ -1389,53 +1389,53 @@ $(document).ready(function () {
     for (var i = 0; i < selectedEl.length; i++) {
       $(selectedEl[i]).css('box-shadow', '0 0 10px blue');
     }
-    $('#info').html('Question selected');
+    $('#info').html(voice_commands_lang.question_selected);
   }
   let numQ = 0;
   function selectAnswer(command) {
     numQ = textNum(command);
     let elements = $(selectedEl).find('input[type="radio"], input[type="checkbox"]');
     if (!selectedEl) {
-      $('#info').html('pls select question');
+      $('#info').html(voice_commands_lang.pls_select_question);
       return;
     }
     if (!numQ || numQ > elements.length) {
-      $('#info').html('answer not found');
+      $('#info').html(voice_commands_lang.answer_not_found);
       return;
     }
     if ($(elements[numQ - 1]).is(':checked')) {
-      $('#info').html('answer already selected');
+      $('#info').html(voice_commands_lang.answer_already_selected);
     } else {
       $(elements[numQ - 1]).click();
-      $('#info').html('answer selected');
+      $('#info').html(voice_commands_lang.answer_selected);
     }
   }
 
   function selectNextAnswer() {
     numQ++;
-    selectAnswer(`select answer ${numQ}`);
+    selectAnswer(voice_commands_lang.select_answer + ' ' + numQ);
   }
   function selectPreviousAnswer() {
     numQ--;
-    selectAnswer(`select answer ${numQ}`);
+    selectAnswer(voice_commands_lang.select_answer + ' ' + numQ);
   }
 
   function unselectAnswer(command) {
     let numQ = textNum(command);
     let elements = $(selectedEl).find('input[type="radio"], input[type="checkbox"]');
     if (!numQ || numQ > elements.length) {
-      $('#info').html('answer not found');
+      $('#info').html(voice_commands_lang.answer_not_found);
       return;
     }
     if (!$(elements[numQ - 1]).hasClass('checkboxAnswers')) {
-      $('#info').html('select another answer for unselecting this one');
+      $('#info').html(voice_commands_lang.select_another_answer);
       return;
     }
     if (!$(elements[numQ - 1]).is(':checked')) {
-      $('#info').html('answer already not selected');
+      $('#info').html(voice_commands_lang.answer_already_not_selected);
     } else {
       $(elements[numQ - 1]).click();
-      $('#info').html('answer unselected');
+      $('#info').html(voice_commands_lang.answer_unselected);
     }
   }
 
@@ -1446,7 +1446,7 @@ $(document).ready(function () {
         typing = true;
         textarea.focus();
       } else {
-        $('#info').html('Textarea not found');
+        $('#info').html(voice_commands_lang.textarea_not_found);
       }
     } else {
       var input = command.substring(4);
@@ -1472,7 +1472,7 @@ $(document).ready(function () {
   }
 
   function deleteWords(command) {
-    if (command.indexOf('delete all') >= 0) {
+    if (command.indexOf(voice_commands_lang.delete_all) >= 0) {
       if (textareaF) {
         textareaF.val(' ');
       }
@@ -1488,34 +1488,34 @@ $(document).ready(function () {
   }
 
   var Small = {
-    zero: 0,
-    one: 1,
-    two: 2,
-    three: 3,
-    four: 4,
-    five: 5,
-    six: 6,
-    seven: 7,
-    eight: 8,
-    nine: 9,
-    ten: 10,
-    eleven: 11,
-    twelve: 12,
-    thirteen: 13,
-    fourteen: 14,
-    fifteen: 15,
-    sixteen: 16,
-    seventeen: 17,
-    eighteen: 18,
-    nineteen: 19,
-    twenty: 20,
-    thirty: 30,
-    forty: 40,
-    fifty: 50,
-    sixty: 60,
-    seventy: 70,
-    eighty: 80,
-    ninety: 90,
+    [voice_commands_lang.zero]: 0,
+    [voice_commands_lang.one]: 1,
+    [voice_commands_lang.two]: 2,
+    [voice_commands_lang.three]: 3,
+    [voice_commands_lang.four]: 4,
+    [voice_commands_lang.five]: 5,
+    [voice_commands_lang.six]: 6,
+    [voice_commands_lang.seven]: 7,
+    [voice_commands_lang.eight]: 8,
+    [voice_commands_lang.nine]: 9,
+    [voice_commands_lang.ten]: 10,
+    [voice_commands_lang.eleven]: 11,
+    [voice_commands_lang.twelve]: 12,
+    [voice_commands_lang.thirteen]: 13,
+    [voice_commands_lang.fourteen]: 14,
+    [voice_commands_lang.fifteen]: 15,
+    [voice_commands_lang.sixteen]: 16,
+    [voice_commands_lang.seventeen]: 17,
+    [voice_commands_lang.eighteen]: 18,
+    [voice_commands_lang.nineteen]: 19,
+    [voice_commands_lang.twenty]: 20,
+    [voice_commands_lang.thirty]: 30,
+    [voice_commands_lang.forty]: 40,
+    [voice_commands_lang.fifty]: 50,
+    [voice_commands_lang.sixty]: 60,
+    [voice_commands_lang.seventy]: 70,
+    [voice_commands_lang.eighty]: 80,
+    [voice_commands_lang.ninety]: 90,
   };
   var a, n, g;
 
@@ -2050,22 +2050,16 @@ $(document).ready(function () {
 
   var speechHTML = ` <div class="center speech-group">
                             <div class="info-speech">
-                            <p class="info_start" style="display: none">Click on the microphone icon and begin speaking
+                            <p class="info_start" style="display: none">${voice_commands_lang.click_command}
                             </p>
-                            <p class="info_speak_now" style="display: none">Speak now.</p>
-                            <p class="info_no_speech" style="display: none">No speech was detected. You may need to
-                                adjust your microphone
-                                settings.
+                            <p class="info_speak_now" style="display: none">${voice_commands_lang.listening}</p>
+                            <p class="info_no_speech" style="display: none">${voice_commands_lang.no_speech_detected}
                             </p>
-                            <p class="info_no_microphone" style="display:none">No microphone was found. Ensure that a
-                                microphone is installed and
-                                that settings are configured correctly.</p>
-                            <p class="info_allow" style="display: none">Click the "Allow" button above to enable your
-                                microphone.</p>
-                            <p class="info_denied" style="display: none">Permission to use microphone was denied.</p>
-                            <p class="info_blocked" style="display: none">Permission to use microphone is blocked.</p>
-                            <p class="info_upgrade" style="display: none">Web Speech API is not supported by this
-                                browser.</p>
+                            <p class="info_no_microphone" style="display:none">${voice_commands_lang.no_microphone_found}</p>
+                            <p class="info_allow" style="display: none">${voice_commands_lang.allow_microphone}</p>
+                            <p class="info_denied" style="display: none">${voice_commands_lang.microphone_permission_denied}</p>
+                            <p class="info_blocked" style="display: none">${voice_commands_lang.microphone_permission_blocked}</p>
+                            <p class="info_upgrade" style="display: none">${voice_commands_lang.web_speech_api_not_supported}</p>
                         </div>
                             <button class="start_button" type="button">
                                 <img class="start_img"
@@ -2234,7 +2228,7 @@ $(document).ready(function () {
       if (!$('.feature-voice-commands').length) {
         selectGroups();
         $('html').addClass('feature-voice-commands');
-        $('#info').html('Click on the microphone icon and begin speaking');
+        $('#info').html(voice_commands_lang.click_command);
         startBtn.addEventListener('click', speechVoiceCom);
         startBtn.click();
         addCookie('voiceCommands');
@@ -2314,6 +2308,7 @@ $(document).ready(function () {
     const cookieValue = $.cookie('accessibilitySettings');
     if (cookieValue) {
       const settings = JSON.parse(cookieValue);
+      console.log(settings);
       let profile = 0;
       $.each(settings, function (id, value) {
         if (
