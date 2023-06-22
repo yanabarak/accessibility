@@ -1163,7 +1163,10 @@ $(document).ready(function () {
       ninety: 'ninety',
     };
   } else if (typeof voice_commands_lang == 'string') {
+    let elementToRemove = '\\[-1\\]';
+    voice_commands_lang = voice_commands_lang.replace(new RegExp(elementToRemove, 'g'), '');
     voice_commands_lang_p = JSON.parse(voice_commands_lang);
+    console.log(voice_commands_lang_p);
   } else {
     voice_commands_lang_p = voice_commands_lang;
   }
@@ -1205,14 +1208,21 @@ $(document).ready(function () {
           if (
             typing &&
             textarea &&
-            final_transcript.toLowerCase().trim() != voice_commands_lang_p.exit &&
-            final_transcript.toLowerCase().trim().indexOf(voice_commands_lang_p.delete) < 0
+            final_transcript.toLowerCase().trim() !=
+              voice_commands_lang_p.exit.toLowerCase().replace(/\./g, '') &&
+            final_transcript
+              .toLowerCase()
+              .trim()
+              .indexOf(voice_commands_lang_p.delete.toLowerCase().replace(/\./g, '')) < 0
           ) {
             $($(textarea)[0]).val(textareaText.trim() + ' ' + final_transcript.trim());
           } else if (
             typing &&
             textarea &&
-            final_transcript.toLowerCase().trim().indexOf(voice_commands_lang_p.delete) >= 0
+            final_transcript
+              .toLowerCase()
+              .trim()
+              .indexOf(voice_commands_lang_p.delete.toLowerCase().replace(/\./g, '')) >= 0
           ) {
             deleteWords(final_transcript.toLowerCase().trim());
           } else {
@@ -1270,65 +1280,71 @@ $(document).ready(function () {
       .toLowerCase()
       .trim()
       .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '');
-    if (com.indexOf(voice_commands_lang_p.select) >= 0) {
-      if (com.indexOf(voice_commands_lang_p.question) >= 0) {
+    if (com.indexOf(voice_commands_lang_p.select.toLowerCase().replace(/\./g, '')) >= 0) {
+      if (com.indexOf(voice_commands_lang_p.question.toLowerCase().replace(/\./g, '')) >= 0) {
         selectQGroup(com);
         return;
-      } else if (com.indexOf(voice_commands_lang_p.next_answer) >= 0) {
+      } else if (
+        com.indexOf(voice_commands_lang_p.next_answer.toLowerCase().replace(/\./g, '')) >= 0
+      ) {
         selectNextAnswer();
         return;
-      } else if (com.indexOf(voice_commands_lang_p.previous_answer) >= 0) {
+      } else if (
+        com.indexOf(voice_commands_lang_p.previous_answer.toLowerCase().replace(/\./g, '')) >= 0
+      ) {
         selectPreviousAnswer();
         return;
-      } else if (com.indexOf(voice_commands_lang_p.answer) >= 0) {
+      } else if (com.indexOf(voice_commands_lang_p.answer.toLowerCase().replace(/\./g, '')) >= 0) {
         selectAnswer(com);
         return;
       }
-    } else if (com.startsWith(voice_commands_lang_p.remove_answer)) {
+    } else if (
+      com.startsWith(voice_commands_lang_p.remove_answer.toLowerCase().replace(/\./g, ''))
+    ) {
       unselectAnswer(com);
       return;
-    } else if (com.startsWith(voice_commands_lang_p.type)) {
+    } else if (com.startsWith(voice_commands_lang_p.type.toLowerCase().replace(/\./g, ''))) {
       typeInTextarea(com);
       return;
-    } else if (com.startsWith(voice_commands_lang_p.exit)) {
+    } else if (com.startsWith(voice_commands_lang_p.exit.toLowerCase().replace(/\./g, ''))) {
       exitTyping();
       return;
-    } else if (com.startsWith(voice_commands_lang_p.delete)) {
+    } else if (com.startsWith(voice_commands_lang_p.delete.toLowerCase().replace(/\./g, ''))) {
       deleteWords(com);
       return;
     }
     switch (com) {
-      case voice_commands_lang_p.pause:
+      case voice_commands_lang_p.pause.toLowerCase().replace(/\./g, ''):
         $('#start_button_vc').click();
         break;
-      case voice_commands_lang_p.next_question:
+      case voice_commands_lang_p.next_question.toLowerCase().replace(/\./g, ''):
         nextElement();
         break;
-      case voice_commands_lang_p.previous_question:
+      case voice_commands_lang_p.previous_question.toLowerCase().replace(/\./g, ''):
         previousElement();
         break;
-      case voice_commands_lang_p.scroll_up:
+      case voice_commands_lang_p.scroll_up.toLowerCase().replace(/\./g, ''):
         scrollUp();
         break;
-      case voice_commands_lang_p.scroll_down:
+      case voice_commands_lang_p.scroll_down.toLowerCase().replace(/\./g, ''):
         scrollDown();
         break;
-      case voice_commands_lang_p.continue:
+      case voice_commands_lang_p.continue.toLowerCase().replace(/\./g, ''):
         if ($('#continue').length) {
           continueClick();
         }
         break;
-      case voice_commands_lang_p.go_back:
+      case voice_commands_lang_p.go_back.toLowerCase().replace(/\./g, ''):
         if ($('#goBack').length) {
           goBack();
         }
         break;
-      case voice_commands_lang_p.finish_survey:
+      case voice_commands_lang_p.finish_survey.toLowerCase().replace(/\./g, ''):
         if ($('#finishCrit').length) {
           finishCrit();
         }
         break;
-      case voice_commands_lang_p.stop:
+      case voice_commands_lang_p.stop.toLowerCase().replace(/\./g, ''):
         stopVNav();
         break;
       default:
@@ -1493,11 +1509,11 @@ $(document).ready(function () {
 
   function selectNextAnswer() {
     numQ++;
-    selectAnswer(voice_commands_lang_p.select_answer + ' ' + numQ);
+    selectAnswer(voice_commands_lang_p.select_answer.toLowerCase().replace(/\./g, '') + ' ' + numQ);
   }
   function selectPreviousAnswer() {
     numQ--;
-    selectAnswer(voice_commands_lang_p.select_answer + ' ' + numQ);
+    selectAnswer(voice_commands_lang_p.select_answer.toLowerCase().replace(/\./g, '') + ' ' + numQ);
   }
 
   function unselectAnswer(command) {
@@ -1552,7 +1568,7 @@ $(document).ready(function () {
   }
 
   function deleteWords(command) {
-    if (command.indexOf(voice_commands_lang_p.delete_all) >= 0) {
+    if (command.indexOf(voice_commands_lang_p.delete_all.toLowerCase().replace(/\./g, '')) >= 0) {
       if (textareaF) {
         textareaF.val(' ');
       }
@@ -1568,34 +1584,34 @@ $(document).ready(function () {
   }
 
   var Small = {
-    [voice_commands_lang_p.zero]: 0,
-    [voice_commands_lang_p.one]: 1,
-    [voice_commands_lang_p.two]: 2,
-    [voice_commands_lang_p.three]: 3,
-    [voice_commands_lang_p.four]: 4,
-    [voice_commands_lang_p.five]: 5,
-    [voice_commands_lang_p.six]: 6,
-    [voice_commands_lang_p.seven]: 7,
-    [voice_commands_lang_p.eight]: 8,
-    [voice_commands_lang_p.nine]: 9,
-    [voice_commands_lang_p.ten]: 10,
-    [voice_commands_lang_p.eleven]: 11,
-    [voice_commands_lang_p.twelve]: 12,
-    [voice_commands_lang_p.thirteen]: 13,
-    [voice_commands_lang_p.fourteen]: 14,
-    [voice_commands_lang_p.fifteen]: 15,
-    [voice_commands_lang_p.sixteen]: 16,
-    [voice_commands_lang_p.seventeen]: 17,
-    [voice_commands_lang_p.eighteen]: 18,
-    [voice_commands_lang_p.nineteen]: 19,
-    [voice_commands_lang_p.twenty]: 20,
-    [voice_commands_lang_p.thirty]: 30,
-    [voice_commands_lang_p.forty]: 40,
-    [voice_commands_lang_p.fifty]: 50,
-    [voice_commands_lang_p.sixty]: 60,
-    [voice_commands_lang_p.seventy]: 70,
-    [voice_commands_lang_p.eighty]: 80,
-    [voice_commands_lang_p.ninety]: 90,
+    [voice_commands_lang_p.zero.toLowerCase().replace(/\./g, '')]: 0,
+    [voice_commands_lang_p.one.toLowerCase().replace(/\./g, '')]: 1,
+    [voice_commands_lang_p.two.toLowerCase().replace(/\./g, '')]: 2,
+    [voice_commands_lang_p.three.toLowerCase().replace(/\./g, '')]: 3,
+    [voice_commands_lang_p.four.toLowerCase().replace(/\./g, '')]: 4,
+    [voice_commands_lang_p.five.toLowerCase().replace(/\./g, '')]: 5,
+    [voice_commands_lang_p.six.toLowerCase().replace(/\./g, '')]: 6,
+    [voice_commands_lang_p.seven.toLowerCase().replace(/\./g, '')]: 7,
+    [voice_commands_lang_p.eight.toLowerCase().replace(/\./g, '')]: 8,
+    [voice_commands_lang_p.nine.toLowerCase().replace(/\./g, '')]: 9,
+    [voice_commands_lang_p.ten.toLowerCase().replace(/\./g, '')]: 10,
+    [voice_commands_lang_p.eleven.toLowerCase().replace(/\./g, '')]: 11,
+    [voice_commands_lang_p.twelve.toLowerCase().replace(/\./g, '')]: 12,
+    [voice_commands_lang_p.thirteen.toLowerCase().replace(/\./g, '')]: 13,
+    [voice_commands_lang_p.fourteen.toLowerCase().replace(/\./g, '')]: 14,
+    [voice_commands_lang_p.fifteen.toLowerCase().replace(/\./g, '')]: 15,
+    [voice_commands_lang_p.sixteen.toLowerCase().replace(/\./g, '')]: 16,
+    [voice_commands_lang_p.seventeen.toLowerCase().replace(/\./g, '')]: 17,
+    [voice_commands_lang_p.eighteen.toLowerCase().replace(/\./g, '')]: 18,
+    [voice_commands_lang_p.nineteen.toLowerCase().replace(/\./g, '')]: 19,
+    [voice_commands_lang_p.twenty.toLowerCase().replace(/\./g, '')]: 20,
+    [voice_commands_lang_p.thirty.toLowerCase().replace(/\./g, '')]: 30,
+    [voice_commands_lang_p.forty.toLowerCase().replace(/\./g, '')]: 40,
+    [voice_commands_lang_p.fifty.toLowerCase().replace(/\./g, '')]: 50,
+    [voice_commands_lang_p.sixty.toLowerCase().replace(/\./g, '')]: 60,
+    [voice_commands_lang_p.seventy.toLowerCase().replace(/\./g, '')]: 70,
+    [voice_commands_lang_p.eighty.toLowerCase().replace(/\./g, '')]: 80,
+    [voice_commands_lang_p.ninety.toLowerCase().replace(/\./g, '')]: 90,
   };
   var a, n, g;
 
