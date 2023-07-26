@@ -1,3 +1,60 @@
+let lang_code = {
+  ar_EG: 'ar-EG',
+  ar_SA: 'ar-SA',
+  ar_AE: 'ar-AE',
+  bs_BA: 'bs-BA',
+  bg_BG: 'bg-BG',
+  hr_CR: 'hr-HR',
+  cs_CZ: 'cs-CZ',
+  da_DA: 'da-DK',
+  de_DE: 'de-DE',
+  de_CH: 'de-CH',
+  nl_NL: 'nl-NL',
+  en_AU: 'en-AU',
+  en_UK: 'en-GB',
+  en_US: 'en-US',
+  en_v2: 'en-US',
+  en_SRT: 'en-US',
+  en_SRV: 'en-US',
+  es_CA: 'es-CA',
+  es_SP: 'es-PM',
+  es_SA: 'es_US',
+  et_ET: 'et-EE',
+  nl_BE: 'nl-BE',
+  fr_FR: 'fr-FR',
+  fr_BE: 'fr-BE',
+  hu_HU: 'hu-HU',
+  jp_JP: 'ja-jp',
+  il_HE: 'he-IL',
+  il_HEBAK: 'he-IL',
+  il_HES: 'he-IL',
+  il_evaluations: 'he-IL',
+  it_IT: 'it-IT',
+  lt_LTU: 'lt-LT',
+  mk_MK: 'mk-MK',
+  pl_PL: 'pl-PL',
+  pt_BR: 'pt-BR',
+  pt_PT: 'pt-PT',
+  ro_RO: 'ro-RO',
+  sr_SR: 'sr_RS',
+  sk_SK: 'sk-SK',
+  sl_SI: 'sl-SI',
+  th_TH: 'th-TH',
+  tu_TUR: 'tr-TR',
+  ua_RU: 'ru-RU',
+  ru_v2: 'ru-RU',
+  ua_UA: 'uk-UA',
+  zh_SC: 'zh-CN',
+  zh_CM: 'zh-CN',
+  ka_GE: 'ka-GE',
+  nn_NO: 'nn_NO',
+  ru_Romir_Toyota: 'ru-RU',
+  lv_Latvian: 'lv-LV',
+  'vi-VN': 'vi-VN',
+  el_GR: 'el-GR',
+  fi_FI: 'fi-FI',
+};
+
 function inject(fn, document) {
   const script = document.createElement('script');
   script.text = `(${fn.toString()})();`;
@@ -312,6 +369,10 @@ window.addEventListener('load', () => {
 */
 
 $(document).ready(function () {
+  let final_lang = lang_code[$('body').attr('data-lang')]
+    ? lang_code[$('body').attr('data-lang')]
+    : 'en-US';
+
   let mouseX = -100;
   let mouseY = -100;
   let ringX = -100;
@@ -502,7 +563,7 @@ $(document).ready(function () {
   async function speak(text, rate, pitch, volume, target) {
     speechSynthesis.cancel();
     // let result = await getLanguage(text);
-    let result = $('body').attr('data-lang');
+    let result = final_lang;
     let speakData = new SpeechSynthesisUtterance();
     speakData.volume = volume;
     speakData.rate = rate;
@@ -1032,7 +1093,7 @@ $(document).ready(function () {
       };
     }
     final_transcript = '';
-    recognition.lang = $('body').attr('data-lang');
+    recognition.lang = final_lang;
     recognition.start();
     ignore_onend = false;
     final_span.innerHTML = '';
@@ -1088,8 +1149,11 @@ $(document).ready(function () {
   var start_timestamp;
   var recognitionVC;
   var voice_commands_lang_p;
-  var langVC = $('body').attr('data-lang');
-  if (typeof voice_commands_lang == 'undefined') {
+  var langVC = final_lang;
+  if (
+    typeof voice_commands_lang == 'undefined' ||
+    typeof lang_code[$('body').attr('data-lang')] == 'undefined'
+  ) {
     langVC = 'en-US';
     voice_commands_lang_p = {
       click_command: 'Click on the microphone icon and begin speaking',
@@ -1166,6 +1230,7 @@ $(document).ready(function () {
     let elementToRemove = '\\[-1\\]';
     voice_commands_lang = voice_commands_lang.replace(new RegExp(elementToRemove, 'g'), '');
     voice_commands_lang_p = JSON.parse(voice_commands_lang);
+    console.log(voice_commands_lang_p);
     console.log(voice_commands_lang_p);
   } else {
     voice_commands_lang_p = voice_commands_lang;
